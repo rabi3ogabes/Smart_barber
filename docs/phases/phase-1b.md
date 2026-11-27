@@ -1,6 +1,6 @@
 # Phase 1b — Foundation: Flutter apps — Report
 
-Status: **DONE**, except iOS builds; limitations are in section 9. With Phase 1a, the Phase 1 gate is met: login works in both apps and the dashboard, Arabic/English switch, tenant isolation tests green.
+Status: **DONE**. Both Android apps build; iOS cannot be built on Linux (section 9). With Phase 1a, the Phase 1 gate is met: login works in both apps and the dashboard, Arabic/English switch, tenant isolation tests green.
 
 ## 1. Implemented (what a user can now do)
 
@@ -82,7 +82,7 @@ Golden files, rendered with the real fonts:
 | `flutter test` — `sb_core` 17, `sb_api` 5, `sb_ui` 4, customer 17, staff 11 | **54 tests, all passing** |
 | Generated code up to date (`tool/flutter_codegen.sh` + `git diff`) | passing (it caught one stale hash, fixed) |
 | Contract test `sb_api/test_e2e` against the running Laravel backend | **3/3 passing** |
-| `flutter build apk --debug` (dev flavor), customer and staff | in progress — Maven Central rate-limits Gradle (HTTP 429) in this session; result recorded in a follow-up commit |
+| `flutter build apk --debug` (dev flavor), customer and staff | **both build** (`app-debug.apk`, customer and staff); the customer build needed one retry because Maven Central rate-limited Gradle (HTTP 429) |
 | iOS builds | not possible on Linux (needs macOS + Xcode) |
 
 What the tests cover:
