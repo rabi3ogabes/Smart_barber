@@ -36,7 +36,7 @@ final class StaffSessionProvider
   StaffSession create() => StaffSession();
 }
 
-String _$staffSessionHash() => r'236b9fb56df8de6c606d68f15e445be837033e4e';
+String _$staffSessionHash() => r'8ed775442b2f90a661ffbf9398b182189c9a93cc';
 
 /// Salon-bound staff session (ADR-002). Every token belongs to exactly one salon.
 
