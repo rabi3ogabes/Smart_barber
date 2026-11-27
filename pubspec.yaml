@@ -1,0 +1,16 @@
+# Dart pub workspace (ADR-006): one `flutter pub get` at the repo root resolves every app and package.
+name: smart_barber_workspace
+publish_to: none
+
+environment:
+  sdk: ^3.14.0
+
+workspace:
+  - packages/sb_core
+  - packages/sb_ui
+  - packages/sb_api
+  - apps/customer
+  - apps/staff
+
+dev_dependencies:
+  very_good_analysis: ^11.0.0

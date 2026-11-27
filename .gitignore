@@ -1,0 +1,16 @@
+# Dart / Flutter workspace (root). Apps and packages keep their own .gitignore too.
+.dart_tool/
+/build/
+**/build/
+.flutter-plugins
+.flutter-plugins-dependencies
+*.iml
+.idea/
+.DS_Store
+
+# Generated Dart code IS committed (freezed, json_serializable, riverpod, go_router, gen-l10n,
+# design tokens) so `flutter pub get && flutter analyze` works right after a clone.
+# Regenerate with tool/flutter_codegen.sh; CI checks it is up to date.
+
+# Kotlin compiler daemon state
+**/.kotlin/

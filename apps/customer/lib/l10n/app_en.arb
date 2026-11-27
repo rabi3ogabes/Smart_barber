@@ -1,0 +1,78 @@
+{
+  "@@locale": "en",
+  "appTitle": "Smart Barber",
+  "languageTitle": "Choose your language",
+  "languageSubtitle": "اختر لغتك",
+  "languageChangeLater": "You can change this later in your profile.",
+  "phoneTitle": "Sign in with your mobile",
+  "phoneSubtitle": "We’ll send you a 6-digit code.",
+  "phoneLabel": "Mobile number",
+  "phoneHint": "5512 3456",
+  "phoneInvalid": "Enter a valid mobile number.",
+  "sendCode": "Send code",
+  "sessionExpired": "Your session ended. Please sign in again.",
+  "otpTitle": "Enter the code",
+  "otpSubtitle": "We sent it to {phone}",
+  "@otpSubtitle": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "otpLabel": "6-digit code",
+  "otpInvalidFormat": "Enter the 6 digits from the message.",
+  "verify": "Verify",
+  "resendIn": "Resend code in {seconds}s",
+  "@resendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "resend": "Resend code",
+  "codeResent": "A new code is on its way.",
+  "changeNumber": "Change number",
+  "tabHome": "Home",
+  "tabBook": "Book",
+  "tabAiStudio": "AI Studio",
+  "tabAppointments": "Visits",
+  "tabProfile": "Profile",
+  "greetingMorning": "Good morning",
+  "greetingAfternoon": "Good afternoon",
+  "greetingEvening": "Good evening",
+  "homeSoonTitle": "Your salon, one tap away",
+  "homeSoonBody": "Your next appointment, favourite services and rewards will appear here.",
+  "bookSoonTitle": "Booking opens soon",
+  "bookSoonBody": "Choose a service, your barber and a time — all in a few taps.",
+  "aiSoonTitle": "Try a style on your own photo",
+  "aiSoonBody": "AI Hair Studio is coming soon. Preview a cut before you book it.",
+  "appointmentsSoonTitle": "No appointments yet",
+  "appointmentsSoonBody": "Upcoming and past visits will be listed here.",
+  "profileTitle": "Profile",
+  "profileGuestName": "Welcome",
+  "profileLanguage": "Language",
+  "profileTheme": "Appearance",
+  "profileVersion": "Version {version}",
+  "@profileVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "signOutConfirmTitle": "Sign out?",
+  "signOutConfirmBody": "You’ll need a new code to sign in again.",
+  "greetingWithName": "{greeting}, {name}",
+  "@greetingWithName": {
+    "placeholders": {
+      "greeting": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  }
+}

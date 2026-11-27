@@ -1,0 +1,21 @@
+import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sb_core/sb_core.dart';
+import 'package:smartbarber_staff/app/app.dart';
+import 'package:smartbarber_staff/app/providers.dart';
+
+Future<void> bootstrap() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final env = AppEnv.fromDefines();
+  final prefs = await AppPreferences.load();
+
+  runApp(
+    ProviderScope(
+      overrides: [
+        envProvider.overrideWithValue(env),
+        preferencesProvider.overrideWithValue(prefs),
+      ],
+      child: const StaffApp(),
+    ),
+  );
+}

@@ -1,0 +1,24 @@
+name: sb_api
+description: Smart Barber shared package (sb_api).
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.14.0
+  flutter: ">=3.50.0"
+
+dependencies:
+  dio: ^5.11.1
+  flutter:
+    sdk: flutter
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.12.0
+  sb_core:
+    path: ../sb_core
+
+dev_dependencies:
+  build_runner: ^2.17.1
+  flutter_test:
+    sdk: flutter
+  freezed: ^4.0.3
+  json_serializable: ^6.15.2

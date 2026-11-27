@@ -20,6 +20,17 @@ Two apps, not one role-based app: the customer app stays light and App Store-fri
 | Flavors | `dev`, `staging`, `prod` with `--dart-define-from-file` | Never ship a test API URL |
 | Quality | very_good_analysis lints; unit + widget tests; golden tests in EN-LTR and AR-RTL, light and dark; integration_test for booking flow | RTL bugs caught by CI |
 
+## As built (Phase 1b)
+
+- Flutter 3.50.1 / Dart 3.14, a pub workspace at the repo root (`pubspec.yaml`), `very_good_analysis` 11 via the root `analysis_options.yaml`.
+- Material and Cupertino come from `material_ui` / `cupertino_ui` (ADR-007).
+- Riverpod 3 with codegen (`@riverpod`), go_router 18 with `go_router_builder` typed routes (including a typed `StatefulShellRoute` for the tab shells), Freezed 4 + json_serializable for DTOs.
+- Generated files (`*.g.dart`, `*.freezed.dart`, `l10n/generated/`, `sb_tokens.g.dart`) are committed. `tool/flutter_codegen.sh` regenerates them; `tool/flutter_check.sh` fails when they are stale and runs analyze and tests for every member.
+- Design tokens: `design/tokens.json` → `packages/sb_ui/tool/generate_tokens.dart` → `sb_tokens.g.dart` (`SbColors` ThemeExtension, `SbType`, `SbRadius`, `SbSpace`, `SbMotion`, `SbLayout`). The fonts (Inter, Fraunces, IBM Plex Sans Arabic, OFL) are bundled in `sb_ui`; the variable fonts get their weight through `FontVariation`.
+- Networking (`sb_core`): Accept-Language → Idempotency-Key (per user intent) → auth (single-flight refresh, replay through a separate client, session ends only on `REFRESH_TOKEN_*`/`UNAUTHENTICATED`/`MEMBERSHIP_INACTIVE`) → GET-only retry with backoff. Every error becomes a sealed `AppFailure`, and the UI shows `failureMessage()` (server code → local translation).
+- Goldens: `test/goldens/*` in both apps, rendered with the real fonts (`sb_ui/testing.dart`). Regenerate on Linux: `flutter test --update-goldens`.
+- Flavours: `--dart-define-from-file=env/{dev,staging,prod}.json`; `AppEnv.validate()` refuses a prod build that is not `https://api.smartbarber.app`.
+
 ## Package layout
 
 ```

@@ -9,7 +9,21 @@ Multi-tenant SaaS for luxury barbershops: Laravel backend + dashboard, Flutter c
 - `docs/phases/` — one report per finished phase (created as phases complete)
 
 - `backend/` — Laravel API + dashboard (Phase 1a); see `backend/README.md` to run it
-- `design/tokens.json` — design tokens shared by the dashboard and (from Phase 1b) the Flutter apps
+- `apps/customer/`, `apps/staff/` — Flutter apps; `packages/sb_core`, `sb_api`, `sb_ui` — shared Dart packages (one pub workspace, see below)
+- `design/tokens.json` — design tokens shared by the dashboard and the Flutter apps
 
-Flutter code (`apps/customer/`, `apps/staff/`, `packages/`) arrives in Phase 1b.
-Progress: Phase 0 and Phase 1a done — see `docs/phases/`.
+Progress: Phases 0, 1a and 1b done — see `docs/phases/`.
+
+## Flutter apps
+
+Requirements: Flutter 3.50+ (Dart 3.14), Android SDK for Android builds, Xcode for iOS.
+
+```bash
+flutter pub get                      # once, at the repo root (pub workspace)
+cd apps/customer && flutter run --dart-define-from-file=env/dev.json
+cd apps/staff && flutter run --dart-define-from-file=env/dev.json
+```
+
+`env/dev.json` points at `http://10.0.2.2:8000/api/v1` (the host machine from the Android emulator). Run the backend first (`backend/README.md`).
+
+Quality gate: `tool/flutter_check.sh` (codegen up to date, `flutter analyze --fatal-infos`, all tests); add `--build` to build both APKs. Regenerate code with `tool/flutter_codegen.sh`; regenerate goldens with `flutter test --update-goldens` on Linux.
