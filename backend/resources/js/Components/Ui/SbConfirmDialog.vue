@@ -32,6 +32,7 @@ const { t } = useI18n();
             >
                 <AlertDialogTitle class="text-h4">{{ title }}</AlertDialogTitle>
                 <AlertDialogDescription v-if="description" class="mt-2 text-body text-text-secondary">{{ description }}</AlertDialogDescription>
+                <div v-if="$slots.default" class="mt-4"><slot /></div>
                 <div class="mt-6 flex flex-wrap justify-end gap-3">
                     <AlertDialogCancel class="inline-flex h-12 items-center rounded-input border border-border px-5 text-button hover:bg-surface-muted">
                         {{ t('ui.common.cancel') }}

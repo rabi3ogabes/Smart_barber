@@ -10,6 +10,7 @@ use App\Core\Http\Middleware\Idempotency;
 use App\Core\Http\Middleware\ResolveSalonFromSubdomain;
 use App\Core\Http\Middleware\ResolveSalonFromToken;
 use App\Core\Http\Middleware\SetLocale;
+use App\Core\Http\WebAppExceptionRenderer;
 use App\Core\Http\WebExceptionRenderer;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -56,6 +57,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(fn (Request $request) => $request->is('api/*') || $request->expectsJson());
         $exceptions->render(new ApiExceptionRenderer);
+        $exceptions->render(new WebAppExceptionRenderer);
         $exceptions->dontReport([AppException::class]);
         $exceptions->respond(new WebExceptionRenderer);
     })->create();

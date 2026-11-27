@@ -2,6 +2,9 @@
 
 namespace App\Core\Tenancy\Models;
 
+use App\Core\Audit\Auditable;
+use App\Core\Money\Money;
+use App\Core\Money\MoneyCast;
 use App\Core\Support\HasPublicId;
 use Database\Factories\SalonFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,11 +24,14 @@ use Spatie\Translatable\HasTranslations;
  * @property string $default_locale
  * @property string $country
  * @property string $status
+ * @property int|null $logo_media_id
+ * @property int|null $cover_media_id
+ * @property Money $no_show_fee_amount
  */
 class Salon extends Model
 {
     /** @use HasFactory<SalonFactory> */
-    use HasFactory, HasPublicId, HasTranslations, SoftDeletes;
+    use Auditable, HasFactory, HasPublicId, HasTranslations, SoftDeletes;
 
     public const STATUS_ACTIVE = 'active';
 
@@ -39,7 +45,24 @@ class Salon extends Model
     /** @var list<string> */
     public array $translatable = ['name'];
 
-    protected $fillable = ['slug', 'name', 'currency', 'timezone', 'default_locale', 'country', 'status'];
+    protected $fillable = [
+        'slug', 'name', 'legal_name', 'currency', 'timezone', 'default_locale', 'country', 'status',
+        'tax_number', 'tax_rate_bp', 'prices_include_tax', 'contact_phone', 'contact_email', 'social_links',
+        'lead_time_minutes', 'max_days_ahead', 'cancellation_window_minutes', 'no_show_fee_amount',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'social_links' => 'array',
+            'prices_include_tax' => 'boolean',
+            'tax_rate_bp' => 'integer',
+            'lead_time_minutes' => 'integer',
+            'max_days_ahead' => 'integer',
+            'cancellation_window_minutes' => 'integer',
+            'no_show_fee_amount' => MoneyCast::class.':currency',
+        ];
+    }
 
     /**
      * @return HasMany<Branch, $this>

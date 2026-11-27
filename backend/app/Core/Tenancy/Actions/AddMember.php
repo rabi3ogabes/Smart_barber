@@ -5,6 +5,7 @@ namespace App\Core\Tenancy\Actions;
 use App\Core\Audit\AuditLogger;
 use App\Core\Authorization\PermissionCatalog;
 use App\Core\Identity\Models\User;
+use App\Core\Tenancy\Events\MemberAccessChanged;
 use App\Core\Tenancy\Models\Branch;
 use App\Core\Tenancy\Models\Salon;
 use App\Core\Tenancy\Models\SalonMembership;
@@ -42,8 +43,11 @@ final class AddMember
             }
 
             $user->unsetRelation('roles');
+            $old = $user->getRoleNames()->all();
             $user->syncRoles($roles);
-            AuditLogger::record('membership.roles_changed', $membership, new: ['roles' => $roles], salonId: (int) $salon->getKey());
+            AuditLogger::record('membership.roles_changed', $membership, ['roles' => $old], ['roles' => $roles], salonId: (int) $salon->getKey());
+
+            event(new MemberAccessChanged($membership, $roles));
 
             return $membership;
         });

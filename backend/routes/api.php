@@ -53,3 +53,7 @@ Route::middleware(['auth:customer', 'throttle:api'])->group(function (): void {
     Route::post('devices', [DeviceController::class, 'store'])->name('api.devices.store');
     Route::delete('devices/{fcmToken}', [DeviceController::class, 'destroy'])->name('api.devices.destroy');
 });
+
+// Module routes.
+require base_path('app/Modules/Salon/routes/api.php');
+require base_path('app/Modules/Staff/routes/api.php');

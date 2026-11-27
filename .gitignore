@@ -14,3 +14,4 @@
 
 # Kotlin compiler daemon state
 **/.kotlin/
+dump.rdb

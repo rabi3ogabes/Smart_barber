@@ -14,7 +14,7 @@ use App\Core\Tenancy\Models\Salon;
 final class Menu
 {
     /** Phases already delivered; an item is clickable when its phase is in this list. */
-    private const SHIPPED_PHASES = [1];
+    private const SHIPPED_PHASES = [1, 2];
 
     /**
      * @return list<array{key: string, label: string, icon: string, items: list<array<string, mixed>>}>
@@ -44,6 +44,7 @@ final class Menu
                 ['key' => 'services', 'label' => 'nav.services', 'icon' => 'scissors', 'href' => '/services', 'permission' => 'service.view', 'phase' => 3],
                 ['key' => 'staff', 'label' => 'nav.staff', 'icon' => 'users', 'href' => '/staff', 'permission' => 'staff.view', 'phase' => 2],
                 ['key' => 'schedules', 'label' => 'nav.schedules', 'icon' => 'clock', 'href' => '/schedules', 'permission' => 'schedule.view', 'phase' => 2],
+                ['key' => 'time_off', 'label' => 'nav.time_off', 'icon' => 'calendar', 'href' => '/time-off', 'permission' => 'schedule.view', 'phase' => 2],
                 ['key' => 'commissions', 'label' => 'nav.commissions', 'icon' => 'percent', 'href' => '/commissions', 'permission' => 'commission.view', 'feature' => Feature::COMMISSION, 'phase' => 13],
                 ['key' => 'inventory', 'label' => 'nav.inventory', 'icon' => 'package', 'href' => '/inventory', 'permission' => 'inventory.view', 'feature' => Feature::INVENTORY, 'phase' => 13],
             ]],

@@ -35,12 +35,26 @@ enum ErrorCode: string
     case IdempotencyKeyInvalid = 'IDEMPOTENCY_KEY_INVALID';
     case IdempotencyKeyReused = 'IDEMPOTENCY_KEY_REUSED';
     case IdempotencyInProgress = 'IDEMPOTENCY_IN_PROGRESS';
+    case LastActiveBranch = 'LAST_ACTIVE_BRANCH';
+    case LastActiveOwner = 'LAST_ACTIVE_OWNER';
+    case CannotChangeOwnAccess = 'CANNOT_CHANGE_OWN_ACCESS';
+    case InvitationInvalid = 'INVITATION_INVALID';
+    case InvitationAccountMismatch = 'INVITATION_ACCOUNT_MISMATCH';
+    case AlreadyMember = 'ALREADY_MEMBER';
+    case RoleNotAssignable = 'ROLE_NOT_ASSIGNABLE';
+    case ScheduleRangesOverlap = 'SCHEDULE_RANGES_OVERLAP';
+    case TimeOffNotPending = 'TIME_OFF_NOT_PENDING';
+    case TimeOffOverlaps = 'TIME_OFF_OVERLAPS';
 
     public function status(): int
     {
         return match ($this) {
             self::ValidationFailed, self::OtpInvalid, self::OtpExpired, self::TwoFactorInvalid,
-            self::IdempotencyKeyReused, self::IdempotencyKeyInvalid, self::InvalidCredentials => 422,
+            self::IdempotencyKeyReused, self::IdempotencyKeyInvalid, self::InvalidCredentials,
+            self::LastActiveBranch, self::LastActiveOwner, self::CannotChangeOwnAccess, self::InvitationAccountMismatch,
+            self::AlreadyMember, self::ScheduleRangesOverlap, self::TimeOffNotPending, self::TimeOffOverlaps => 422,
+            self::InvitationInvalid => 410,
+            self::RoleNotAssignable => 403,
             self::Unauthenticated, self::RefreshTokenInvalid, self::RefreshTokenReused,
             self::ChallengeExpired, self::MembershipInactive => 401,
             self::Forbidden, self::NoActiveMembership, self::SalonSuspended, self::FeatureNotAvailable,

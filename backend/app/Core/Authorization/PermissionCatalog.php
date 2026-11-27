@@ -46,7 +46,7 @@ final class PermissionCatalog
         'salon.settings.update' => 'A A - - - - - -',
         'branch.view' => 'A A B B B A A B',
         'branch.manage' => 'A A B - - - - -',
-        'audit_log.view' => 'A A B - - A - -',
+        'audit_log.view' => 'A A - - - A - -', // branch-scoped audit views: later
         'billing.view' => 'A - - - - A - -',
         'billing.manage' => 'A - - - - - - -',
         'staff.view' => 'A A B B - A - -',

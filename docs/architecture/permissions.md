@@ -28,9 +28,11 @@ Super Admin and Customer are not salon roles; they are covered at the end.
 | `salon.settings.update` | ✓ | ✓ | – | – | – | – | – | – |
 | `branch.view` | ✓ | ✓ | B | B | B | ✓ | ✓ | B |
 | `branch.manage` (create, update, deactivate, hours, closures) | ✓ | ✓ | B¹ | – | – | – | – | – |
-| `audit_log.view` | ✓ | ✓ | B | – | – | ✓ | – | – |
+| `audit_log.view` | ✓ | ✓ | –⁰ | – | – | ✓ | – | – |
 | `billing.view` (the salon's own subscription) | ✓ | – | – | – | – | ✓ | – | – |
 | `billing.manage` | ✓ | – | – | – | – | – | – | – |
+
+⁰ Changed in Phase 2: a branch-scoped audit view needs every audit entry tied to a branch; until then only salon-wide roles see the audit log.
 
 ¹ A Branch Manager may edit hours and closures of the Branch Manager's own branches but may not create or deactivate branches.
 

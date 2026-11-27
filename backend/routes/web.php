@@ -1,5 +1,6 @@
 <?php
 
+use App\Core\Audit\Http\AuditLogController;
 use App\Core\Identity\Http\Controllers\Web\DashboardController;
 use App\Core\Identity\Http\Controllers\Web\DevComponentsController;
 use App\Core\Identity\Http\Controllers\Web\PasswordResetController;
@@ -45,6 +46,7 @@ Route::domain('{salon_slug}.'.$domain)
     ->middleware('tenant.subdomain')
     ->group(function (): void {
         Route::post('locale', [PreferencesController::class, 'locale'])->name('locale');
+        require base_path('app/Modules/Staff/routes/public.php');
 
         Route::middleware('guest:web')->group(function (): void {
             Route::get('login', [StaffSessionController::class, 'showLogin'])->name('login');
@@ -66,6 +68,11 @@ Route::domain('{salon_slug}.'.$domain)
                 Route::get('/', DashboardController::class)->middleware('can:dashboard.view')->name('dashboard');
                 Route::post('branch', [PreferencesController::class, 'branch'])->name('branch.switch');
                 Route::get('dev/components', DevComponentsController::class)->name('dev.components');
+                Route::get('audit-log', AuditLogController::class)->middleware('can:audit_log.view')->name('audit-log');
+
+                // Module routes (modules.md): each module owns its dashboard routes.
+                require base_path('app/Modules/Salon/routes/web.php');
+                require base_path('app/Modules/Staff/routes/web.php');
             });
         });
     });

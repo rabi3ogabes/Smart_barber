@@ -2,14 +2,24 @@
 
 use App\Core\Features\Feature;
 use App\Core\Features\SalonFeature;
+use App\Core\Identity\Models\User;
 use App\Core\Settings\Setting;
 use App\Core\Settings\Settings;
 use App\Core\Tenancy\Models\Branch;
 use App\Core\Tenancy\Models\SalonMembership;
 use App\Core\Tenancy\Tenancy;
 use App\Core\Tenancy\TenantNotResolved;
+use App\Modules\Salon\Models\BranchClosure;
+use App\Modules\Salon\Models\BranchOpeningHour;
+use App\Modules\Staff\Models\Barber;
+use App\Modules\Staff\Models\BarberBreak;
+use App\Modules\Staff\Models\BarberScheduleOverride;
+use App\Modules\Staff\Models\BarberWorkingHour;
+use App\Modules\Staff\Models\StaffInvitation;
+use App\Modules\Staff\Models\TimeOffRequest;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Tests\Support\CountBranchesJob;
 
 it('fails closed when no salon is set', function () {
@@ -54,6 +64,15 @@ dataset('tenant models', [
 
         return SalonFeature::query()->firstOrFail();
     }],
+    // Phase 2
+    'branch opening hours' => [fn () => BranchOpeningHour::query()->create(['branch_id' => Branch::query()->value('id'), 'weekday' => 1, 'opens_at' => '10:00', 'closes_at' => '22:00'])],
+    'branch closures' => [fn () => BranchClosure::query()->create(['branch_id' => null, 'starts_on' => '2027-01-01', 'ends_on' => '2027-01-01'])],
+    'staff invitations' => [fn () => StaffInvitation::query()->create(['email' => 'x@example.test', 'role_names' => ['barber'], 'branch_ids' => [], 'token_hash' => hash('sha256', Str::random(48)), 'invited_by' => User::factory()->create()->id, 'expires_at' => now()->addDay()])],
+    'barbers' => [fn () => Barber::factory()->create()],
+    'barber working hours' => [fn () => BarberWorkingHour::query()->create(['barber_id' => Barber::factory()->create()->id, 'branch_id' => Branch::query()->value('id'), 'weekday' => 1, 'starts_at' => '10:00', 'ends_at' => '18:00'])],
+    'barber breaks' => [fn () => BarberBreak::query()->create(['barber_id' => Barber::factory()->create()->id, 'branch_id' => Branch::query()->value('id'), 'weekday' => 1, 'starts_at' => '13:00', 'ends_at' => '13:30'])],
+    'schedule overrides' => [fn () => BarberScheduleOverride::query()->create(['barber_id' => Barber::factory()->create()->id, 'branch_id' => Branch::query()->value('id'), 'date' => '2027-01-04', 'type' => 'day_off'])],
+    'time off requests' => [fn () => TimeOffRequest::query()->create(['barber_id' => Barber::factory()->create()->id, 'starts_at' => '2027-01-04 00:00:00', 'ends_at' => '2027-01-05 00:00:00', 'type' => 'annual', 'status' => 'pending'])],
 ]);
 
 it('isolates', function (Closure $make) {

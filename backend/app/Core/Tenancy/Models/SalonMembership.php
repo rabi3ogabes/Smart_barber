@@ -4,22 +4,28 @@ namespace App\Core\Tenancy\Models;
 
 use App\Core\Audit\Auditable;
 use App\Core\Identity\Models\User;
+use App\Core\Support\HasPublicId;
 use App\Core\Tenancy\BelongsToSalon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
 
 /**
  * A user's membership in one salon (table salon_user).
  *
  * @property int $id
+ * @property string $public_id
  * @property int $salon_id
  * @property int $user_id
  * @property string $status
+ * @property Carbon|null $invited_at
+ * @property Carbon|null $joined_at
+ * @property Carbon|null $deactivated_at
  */
 class SalonMembership extends Model
 {
-    use Auditable, BelongsToSalon;
+    use Auditable, BelongsToSalon, HasPublicId;
 
     public const STATUS_INVITED = 'invited';
 

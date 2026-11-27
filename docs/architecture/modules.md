@@ -76,6 +76,7 @@ Usage metering follows the same idea: `Core\Contracts\UsageMeter::record(salon, 
 **Read services:** `BranchCalendar::openIntervals(branch, dateRange)`.
 **Emits:** `SalonCreated`, `BranchCreated`, `BranchUpdated`.
 **Depends on:** Core.
+**As built (Phase 2):** actions `UpdateSalonProfile`, `UploadSalonImage`, `SaveBranch` (create and update), `SetOpeningHours`, `DeactivateBranch`; closures are added and removed in `BranchController`. Opening hours are read inside `ScheduleService` (no separate `BranchCalendar` yet; it arrives with slots in Phase 4 if needed). Changes are recorded through the `Auditable` trait and `AuditLogger` instead of domain events. `WeekRanges` validates and normalises weekly range input for both modules.
 
 ### Payment (L1)
 **Responsibility:** payment methods, the `payments` ledger, `PaymentGateway` contract + FakeGateway + one real adapter, webhook intake and processing, refunds as reversal rows.
@@ -89,6 +90,7 @@ Usage metering follows the same idea: `Core\Contracts\UsageMeter::record(salon, 
 **Read services:** `ScheduleService::workingIntervals(barber, branch, dateRange)` (combines branch hours, closures, barber hours, breaks, overrides and approved time off).
 **Emits:** `StaffInvited`, `StaffJoined`, `RolesChanged` (audited), `TimeOffRequested`, `TimeOffDecided`.
 **Depends on:** Salon, Core.
+**As built (Phase 2):** actions `InviteStaff` (+ `resend`), `AcceptInvitation`, `UpdateMemberAccess` (roles and branches together, audited as `membership.access_changed`), `ChangeMemberStatus` (deactivate or reactivate), `UpdateBarberProfile`, `SetWeeklySchedule`, `RequestTimeOff`, `DecideTimeOff` (+ `cancel`). Core's `MemberAccessChanged` event drives the `SyncBarberProfile` listener, which creates, restores or pauses the barber profile when the barber role is given or removed. Invitations, joins and time-off decisions are audited; `StaffJoined`/`TimeOff*` events are not emitted yet because no listener needs them before notifications (Phase 11).
 
 ### Customer (L2)
 **Responsibility:** salon-scoped customer profiles, linking to `customer_accounts`, search, merge, anonymisation on deletion, cached visit stats.

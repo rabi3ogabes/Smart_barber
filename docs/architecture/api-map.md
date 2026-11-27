@@ -48,10 +48,10 @@ Customer-facing reads (staff and dashboard management goes through Inertia, list
 | GET | `/salons/{salon}/branches` | public | — | | Active branches with address, map pin, today's hours |
 | GET | `/branches/{branch}` | public | — | | Weekly hours, upcoming closures |
 | GET | `/branches/{branch}/barbers` | public | — | | Bookable barbers: photo, display name, bio, specialties, rating |
-| GET | `/staff/schedule` | staff | `schedule.view` (O) | | Own working intervals for a date range |
+| GET | `/staff/schedule` | staff | `schedule.view` (O) | | `?from=&to=` (branch-local dates, ≤ 31 days). Own working intervals in UTC, grouped by branch |
 | GET | `/staff/time-off` | staff | `timeoff.request` | | Own requests |
 | POST | `/staff/time-off` | staff | `timeoff.request` | ○ | |
-| POST | `/staff/time-off/{request}/cancel` | staff | `timeoff.request` | | Own pending requests only |
+| POST | `/staff/time-off/{request}/cancel` | staff | `timeoff.request` | | Own requests: pending, or approved and not yet started |
 
 ## Phase 3 — Services catalog
 
@@ -132,10 +132,11 @@ These routes call the same Actions as the API. They are listed so permissions ge
 |---|---|---|---|
 | 1 | Auth | `login`, `two-factor`, `forgot-password`, `reset-password`, `logout` | — |
 | 1 | Shell | `/` dashboard, `/dev/components` (local and staging only) | `dashboard.view` |
-| 2 | Settings | `/settings/salon` (show, update), `/settings/booking-policy` | `salon.settings.*` |
-| 2 | Branches | `/branches` index, store, update, deactivate; `/branches/{b}/hours`, `/branches/{b}/closures` | `branch.*` |
-| 2 | Staff | `/staff` index, `/staff/invitations` store and resend, `/staff/{m}` update, roles, branches, deactivate | `staff.*` |
-| 2 | Schedules | `/schedules` (weekly grid), `/schedules/{barber}` update, `/time-off` index, approve and reject | `schedule.*`, `timeoff.approve` |
+| 2 | Settings | `/settings/salon` (show, update; the booking policy is part of this form), `/settings/salon/images/{logo\|cover}` | `salon.settings.*` |
+| 2 | Branches | `/branches` index, store, update (details and hours in one form), `/branches/{b}/status`; `/closures` store, `/closures/{c}` destroy | `branch.*` |
+| 2 | Staff | `/staff` index; `/staff/invitations` store, `{i}/resend`, `{i}` destroy (revoke); `/staff/{m}/access` (roles and branches); `/staff/{m}/status`; `/barbers/{b}/profile`; public `/invitations/{token}` show and accept | `staff.*` |
+| 2 | Schedules | `/schedules` (weekly grid), `/schedules/{barber}` update, `/schedules/{barber}/overrides` store, `/schedule-overrides/{o}` destroy; `/time-off` index and store, `/time-off/{r}/decision`, `/time-off/{r}/cancel` | `schedule.*`, `timeoff.*` |
+| 2 | Audit | `/audit-log` (filter by event group, cursor pages) | `audit_log.view` |
 | 3 | Catalog | `/service-categories` (+ reorder), `/services` (+ branch pricing, barbers, add-ons tabs), `/addons`, `/bundles` | `service.*` |
 | 4 | Calendar | `/calendar` (day and week), JSON: `/calendar/events`, `/calendar/slots` | `booking.view` |
 | 4 | Bookings | `/bookings` index; store, reschedule, cancel, status actions (JSON responses for drawer and drag) | `booking.*` |
