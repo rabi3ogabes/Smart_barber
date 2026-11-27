@@ -12,7 +12,7 @@ Smart Barber targets thousands of small salons with low data volume each, sold o
   - web: subdomain `{slug}.smartbarber.app` (custom domains later), then a check that the user has an active membership;
   - staff API: `personal_access_tokens.salon_id` (the token is bound to one membership);
   - customer API: no CurrentSalon by default. Endpoints resolve the salon from the resource (`{salon}`, branch or booking) and then set CurrentSalon for the rest of the request;
-  - queued jobs: the job carries `salon_id` and a `SetsCurrentSalon` job middleware restores it. A job without a salon fails closed;
+  - queued jobs: every payload carries the dispatching `salon_id` (`Queue::createPayloadUsing`), and a `JobProcessing` listener restores it *before* the job is unserialized, so `SerializesModels` can load tenant models (a job middleware would run too late). The previous tenant is restored afterwards, which also keeps sync jobs inside a request safe. A job without a salon fails closed;
   - console commands iterate salons explicitly (`Salon::each(fn …)`).
 - When CurrentSalon is unset and a tenant model is queried outside an explicit `withoutSalonScope()` block (allowed only in Admin, Analytics aggregation and migrations), the scope **throws** instead of returning every salon's rows.
 - Route model binding uses `public_id` through the scoped query, so a foreign id returns 404.

@@ -10,7 +10,7 @@ The salon dashboard is a large, permission-heavy admin UI (calendar, POS, tables
 - Pages call Laravel controllers that call the **same Actions** as the API. Interactive parts (calendar drag, POS cart, combobox search) call small JSON endpoints on the web guard (session + CSRF), not `/api/v1`. The mobile API stays a clean contract for the apps.
 - Shared UI in `resources/js/Components`, layouts in `Layouts`, i18n via `vue-i18n` with `lang/{ar,en}` exported to JSON at build, so there is one translation source.
 - Design tokens are CSS variables generated from `design-system.md`; Tailwind `theme.extend` maps to the variables; logical utilities only (an ESLint rule plus a Tailwind safelist test ban `ml-`, `mr-`, `pl-`, `pr-`, `left-`, `right-`).
-- Headless primitives: Reka UI (formerly Radix Vue) for accessible dialog, drawer, combobox and menu; TanStack Table for data tables; FullCalendar (resource time-grid) **or** a custom calendar, decided in Phase 4 after a spike (FullCalendar's resource views need a paid licence).
+- Headless primitives: Reka UI (formerly Radix Vue) for accessible dialog, drawer, combobox and menu; a small in-house `SbDataTable` for data tables (Phase 1a: TanStack Table v9 changed its API and was not needed for the shell; revisit when sorting/filtering arrives in Phase 2); FullCalendar (resource time-grid) **or** a custom calendar, decided in Phase 4 after a spike (FullCalendar's resource views need a paid licence).
 - Permissions and enabled features are shared to the frontend as Inertia props, for **display only**. The server enforces everything.
 
 ## Consequences

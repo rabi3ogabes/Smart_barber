@@ -64,15 +64,15 @@ Usage metering follows the same idea: `Core\Contracts\UsageMeter::record(salon, 
 ## Modules
 
 ### Core (L0)
-**Responsibility:** tenancy (`CurrentSalon`, `ResolveSalon`, `BelongsToSalon`), Money, ULIDs, API envelope + exception → error-code mapper, Idempotency middleware, Audit (`Auditable` trait, `audit_logs`), Settings, Features (`Feature::enabled()`), Media/StorageService, devices, OTP, provider contracts (`SmsProvider`, `PushProvider`, `WhatsAppProvider`, `AiImageProvider`, `AiTextProvider`, `StorageService`, `OtpProvider`, `NotificationChannel`, `UsageMeter`) and their fakes, auth for users, customer accounts and platform admins.
+**Responsibility:** tenancy (`CurrentSalon`, `ResolveSalon`, `BelongsToSalon`, and the tenant-root models `Salon`, `Branch`, `SalonMembership` plus the `CreateSalon`/`AddMember` actions — they live in Core because tenancy needs them; changed in Phase 1a), Money, ULIDs, API envelope + exception → error-code mapper, Idempotency middleware, Audit (`Auditable` trait, `audit_logs`), Settings, Features (`Feature::enabled()`), Media/StorageService, devices, OTP, provider contracts (`SmsProvider`, `PushProvider`, `WhatsAppProvider`, `AiImageProvider`, `AiTextProvider`, `StorageService`, `OtpProvider`, `NotificationChannel`, `UsageMeter`) and their fakes, auth for users, customer accounts and platform admins.
 **Public actions:** `IssueOtp`, `VerifyOtp`, `IssueStaffToken`, `IssueCustomerToken`, `RegisterDevice`, `RecordAudit`, `StoreMedia`.
 **Emits:** `UserLoggedIn`, `CustomerAccountCreated`, `CustomerAccountDeletionRequested`.
 **Listens:** none.
 **Depends on:** none.
 
 ### Salon (L1)
-**Responsibility:** salon profile and booking policy, branches, opening hours, closures, salon and branch settings UI.
-**Public actions:** `CreateSalon` (used by seeding and later by Billing onboarding), `UpdateSalonProfile`, `CreateBranch`, `UpdateBranch`, `DeactivateBranch`, `SetOpeningHours`, `AddClosure`.
+**Responsibility:** salon profile and booking policy, branch management, opening hours, closures, salon and branch settings UI (on top of the Core `Salon`/`Branch` models).
+**Public actions:** `UpdateSalonProfile`, `CreateBranch`, `UpdateBranch`, `DeactivateBranch`, `SetOpeningHours`, `AddClosure`.
 **Read services:** `BranchCalendar::openIntervals(branch, dateRange)`.
 **Emits:** `SalonCreated`, `BranchCreated`, `BranchUpdated`.
 **Depends on:** Core.

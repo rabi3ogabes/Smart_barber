@@ -60,7 +60,11 @@ Rule: email or phone is required.
 `phone` str(20) · `purpose` enum(customer_login, staff_login, phone_change) · `code_hash` char(64) · `attempts` tiny · `expires_at` dt · `consumed_at` dt null · `ip` str(45)
 Index: (`phone`, `purpose`, `created_at`)
 
-**personal_access_tokens** (Sanctum) plus the column `salon_id` big null. A staff token is bound to exactly one salon membership; a customer token has `salon_id` null.
+**personal_access_tokens** (Sanctum) plus the columns `salon_id` big null and `refresh_family` char(26) null. A staff token is bound to exactly one salon membership; a customer token has `salon_id` null. Access tokens expire after 60 minutes.
+
+**refresh_tokens** (added in Phase 1a)
+`tokenable_type` · `tokenable_id` · `salon_id` null · `family` char(26) · `token_hash` char(64) UQ · `device_name` · `expires_at` (60 days) · `used_at` null · `revoked_at` null
+Single-use and rotating. Presenting a used token revokes its whole family (ADR-002).
 
 **salon_user** (membership) · T
 `user_id` FK users · `status` enum(invited, active, deactivated) · `invited_by` FK users null · `invited_at` · `joined_at` · `deactivated_at`
@@ -71,7 +75,7 @@ UQ (`salon_id`, `user_id`)
 UQ (`salon_user_id`, `branch_id`). A membership with no rows here and the Branch Manager or Receptionist role has no branch access. Owner and GM ignore this table.
 
 **roles / permissions / model_has_roles / model_has_permissions / role_has_permissions** (spatie, teams on)
-`team_foreign_key` = `salon_id`. `roles.salon_id` null means a platform template role, which is copied into each new salon. UQ (`salon_id`, `name`, `guard_name`).
+`team_foreign_key` = `salon_id`. `roles.salon_id` null means a platform template role shared by every salon (not copied); assignments carry `salon_id`. UQ (`salon_id`, `name`, `guard_name`).
 
 **staff_invitations** · T
 `email` null · `phone` null · `role_names` json · `branch_ids` json · `token_hash` char(64) UQ · `invited_by` FK users · `expires_at` · `accepted_at` null · `accepted_user_id` null

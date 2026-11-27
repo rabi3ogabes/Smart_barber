@@ -1,6 +1,6 @@
 # Permissions
 
-Status: **Accepted (Phase 0, 2026-11-27)**. Permissions use spatie/laravel-permission with teams (team = salon). Roles are per salon and are copied from platform templates when a salon is created. Owners may later create custom roles from these keys (see [spec-review](spec-review.md) item 15).
+Status: **Accepted (Phase 0, 2026-11-27)**. Permissions use spatie/laravel-permission with teams (team = salon). The 8 roles are platform-wide templates (`roles.salon_id` null) that every salon shares; role *assignments* are per salon (`model_has_roles.salon_id`). Per-salon custom roles can be added later from these keys (see [spec-review](spec-review.md) item 15). The code source of truth is `App\Core\Authorization\PermissionCatalog`; keep this file and the catalog identical.
 
 ## Scope legend
 
@@ -45,7 +45,7 @@ Super Admin and Customer are not salon roles; they are covered at the end.
 | `staff.roles.assign` | ✓ | ✓⁴ | – | – | – | – | – | – |
 | `schedule.view` | ✓ | ✓ | B | B | O | – | – | – |
 | `schedule.update` | ✓ | ✓ | B | – | – | – | – | – |
-| `timeoff.request` | – | – | ✓ | ✓ | O | – | – | – |
+| `timeoff.request` | – | – | O | O | O | – | – | – |
 | `timeoff.approve` | ✓ | ✓ | B | – | – | – | – | – |
 
 ² A Branch Manager may invite only Receptionist and Barber roles, only into the Branch Manager's branches.

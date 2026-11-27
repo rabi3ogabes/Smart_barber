@@ -1,0 +1,23 @@
+# Local services for the backend (php artisan serve / npm run dev run on the host).
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: smartbarber
+      MYSQL_USER: sb
+      MYSQL_PASSWORD: secret
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports: ["3306:3306"]
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./backend/docker/mysql-init.sql:/docker-entrypoint-initdb.d/01-test-db.sql:ro
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+  mailpit:
+    image: axllent/mailpit:v1.21
+    ports: ["8025:8025", "1025:1025"]
+
+volumes:
+  mysql-data:

@@ -26,15 +26,17 @@ Column meanings: **Auth** = guard (`public`, `customer`, `staff`). **Perm** = pe
 | POST | `/customer/auth/logout` | customer | own | | Revokes the token and its device |
 | GET | `/customer/me` | customer | own | | |
 | PATCH | `/customer/me` | customer | own | | Name, email, locale |
-| POST | `/staff/auth/login` | public | — | | `{email, password}` → if 2FA is on: `{challenge_token}`; if several salons: `{selection_token, memberships[]}`; otherwise tokens |
-| POST | `/staff/auth/2fa` | public (challenge) | — | | `{challenge_token, code}` |
+| POST | `/staff/auth/login` | public | — | | `{email, password, device_name?}` → tokens; or 409 `TWO_FACTOR_REQUIRED` with `data.challenge_token`; or 409 `SALON_SELECTION_REQUIRED` with `data.selection_token` + `data.memberships[]`; or 403 `TWO_FACTOR_ENROLLMENT_REQUIRED` (Owner/GM must enrol in the dashboard first) |
+| POST | `/staff/auth/2fa` | public (challenge) | — | | `{challenge_token, code}` (TOTP or recovery code) → tokens or 409 `SALON_SELECTION_REQUIRED` |
 | POST | `/staff/auth/select-salon` | public (selection) | — | | `{selection_token, membership}` → salon-bound tokens |
 | POST | `/staff/auth/refresh` | public (refresh token) | — | | |
 | POST | `/staff/auth/logout` | staff | — | | |
 | GET | `/staff/me` | staff | — | | User, current salon, roles, permissions, branches, enabled features |
 | GET | `/staff/me/salons` | staff | — | | For the salon switcher |
-| POST | `/devices` | customer or staff | own | | `{fcm_token, platform, app, locale, app_version}` (upsert) |
-| DELETE | `/devices/{fcm_token}` | customer or staff | own | | |
+| POST | `/devices` | customer | own | | `{fcm_token, platform, app, locale, app_version}` (upsert) |
+| DELETE | `/devices/{fcm_token}` | customer | own | | |
+| POST | `/staff/devices` | staff | — | | Same body; under `/staff` so the device records the token's salon |
+| DELETE | `/staff/devices/{fcm_token}` | staff | — | | |
 
 ## Phase 2 — Salon, branches, staff, schedules
 
