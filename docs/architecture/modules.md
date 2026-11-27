@@ -1,6 +1,6 @@
 # Module map
 
-Status: **Proposed (Phase 0)**. Modules live in `backend/app/Modules/{Name}`. The dependency graph below is acyclic. A module may call another module's **public Actions, Contracts and read-only query services**, and may listen to its **Events**. It never touches another module's Models directly for writes.
+Status: **Accepted (Phase 0, 2026-11-27)**. Modules live in `backend/app/Modules/{Name}`. The dependency graph below is acyclic. A module may call another module's **public Actions, Contracts and read-only query services**, and may listen to its **Events**. It never touches another module's Models directly for writes.
 
 ## Dependency layers
 

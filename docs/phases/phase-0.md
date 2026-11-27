@@ -1,6 +1,6 @@
 # Phase 0 — Architecture plan — Report
 
-Status: **DONE** (documents delivered). Awaiting review and answers to Q1–Q8 in `docs/architecture/spec-review.md` before Phase 1.
+Status: **DONE**. Approved by the owner on 2026-11-27 with the default answers to Q1–Q8. ADR-001 to 006 are Accepted. Tagged `phase-0`.
 
 1. **Implemented (what a user can now do)**
    No application code, by design. The team can review the full data model, module boundaries, permission matrix, API plan for phases 1–6, the six foundational decisions and the risk register.
@@ -25,4 +25,4 @@ Status: **DONE** (documents delivered). Awaiting review and answers to Q1–Q8 i
 8. **Known limitations:** the ERD for phases 7–15 is a first pass and will be refined in each phase's planning step. Some recommendations depend on unanswered questions (Q5, Q7, Q9).
 9. **How to run:** nothing to run. Read `docs/architecture/spec-review.md` first.
 10. **What Phase 1 needs from this phase:** approval of ADR-001 to 006, answers to Q1–Q8, and a decision on splitting Phase 1 into 1a and 1b.
-11. **Decisions made:** ADR-001 tenancy, ADR-002 auth and identities, ADR-003 money, ADR-004 booking locking, ADR-005 dashboard stack, ADR-006 two Flutter apps. All are *Proposed* until you approve them.
+11. **Decisions made:** ADR-001 tenancy, ADR-002 auth and identities, ADR-003 money, ADR-004 booking locking, ADR-005 dashboard stack, ADR-006 two Flutter apps. All Accepted on 2026-11-27.

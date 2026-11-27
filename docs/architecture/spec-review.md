@@ -1,6 +1,6 @@
 # Spec review: contradictions, gaps, over-engineering
 
-Status: Phase 0 output, **awaiting the owner's answers**. Each item gives what the spec says, the problem, and the recommendation. The recommendations are already reflected in the ERD, ADRs and API map; changing an answer means updating those documents before Phase 1.
+Status: **Accepted 2026-11-27.** The owner approved all recommendations and the default answers to Q1–Q8 (below). Q9–Q14 are still open and are due in the phase listed. Each item gives what the spec says, the problem, and the recommendation. The recommendations are already reflected in the ERD, ADRs and API map; changing an answer means updating those documents before Phase 1.
 
 ## A. Contradictions
 
@@ -98,6 +98,8 @@ App stores require in-app deletion; ledgers must not be deleted.
 | Q6 | Hosting: where will production run (provider and region), and is data residency in Qatar or the GCC required? | Reverb, S3, MySQL, backups, compliance | Decide by Phase 4; local Docker until then |
 | Q7 | One barber per booking in the MVP? (item 13) | Locking design | Yes |
 | Q8 | Is the brand name "Smart Barber" final, and do you have a logo? | Phase 1 shell, splash, fonts | Placeholder wordmark |
+
+**Answered 2026-11-27:** the owner chose the defaults for Q1–Q8: `smartbarber.app` via config; Arabic default; Phase 1 split into 1a and 1b; customer identity model approved; prices tax-inclusive, 0 % in Qatar; hosting decided by Phase 4; one barber per booking; placeholder wordmark.
 
 ## Questions that can wait (with the phase that needs them)
 

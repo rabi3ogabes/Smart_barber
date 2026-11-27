@@ -1,6 +1,6 @@
 # ADR-002 — Authentication and identities
 
-Status: Proposed · Phase 0 · Irreversible (identity model)
+Status: Accepted (2026-11-27, owner approved defaults) · Phase 0 · Irreversible (identity model)
 
 ## Context
 There are three kinds of people: salon staff (who may work in several salons with different roles), customers (phone-first, Gulf market, may visit several salons), and platform staff (Super Admin). Mobile apps need long sessions, and the dashboard needs SPA-grade security.

@@ -1,6 +1,6 @@
 # ADR-004 — Booking conflict prevention
 
-Status: Proposed · Phase 0 · Irreversible in practice (the core correctness guarantee)
+Status: Accepted (2026-11-27, owner approved defaults) · Phase 0 · Irreversible in practice (the core correctness guarantee)
 
 ## Context
 Two customers (or a customer and the receptionist) can request the same barber and time at the same instant. MySQL 8 has no exclusion constraints. "No double booking" is the Phase 4 gate.

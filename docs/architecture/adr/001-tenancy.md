@@ -1,6 +1,6 @@
 # ADR-001 — Single-database tenancy with salon_id
 
-Status: Proposed · Phase 0 · Irreversible (schema shape)
+Status: Accepted (2026-11-27, owner approved defaults) · Phase 0 · Irreversible (schema shape)
 
 ## Context
 Smart Barber targets thousands of small salons with low data volume each, sold on cheap plans. It needs one migration path, cross-salon platform reporting (MRR, usage), and customers who may visit more than one salon. A leak between salons would end the business.

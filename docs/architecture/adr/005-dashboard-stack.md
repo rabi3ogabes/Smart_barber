@@ -1,6 +1,6 @@
 # ADR-005 — Dashboard stack: Inertia + Vue 3 + TypeScript in the Laravel app
 
-Status: Proposed · Phase 0
+Status: Accepted (2026-11-27, owner approved defaults) · Phase 0
 
 ## Context
 The salon dashboard is a large, permission-heavy admin UI (calendar, POS, tables, settings) used on desktops and tablets, in Arabic and English. The team is small and one Laravel app also serves the mobile API.

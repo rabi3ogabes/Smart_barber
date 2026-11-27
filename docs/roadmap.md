@@ -22,3 +22,5 @@ The original 21 phases are regrouped into 16 so each one ends in something a sal
 | 15 | Hardening and release / التدقيق والإطلاق | Security audit passed, CI/CD, backups, monitoring, store submissions |
 
 Feature gating (which salon has which module) is built as a simple `salon_features` table in Phase 1, so every later module checks it from day one; full billing arrives in Phase 14. — التحكم في الوحدات يبدأ من المرحلة 1.
+
+Phase 1 runs as two sessions, **1a** (backend + dashboard) and **1b** (Flutter), as approved in Phase 0. The Phase 1 gate applies after both are done.

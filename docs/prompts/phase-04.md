@@ -9,7 +9,13 @@ Implement PHASE 4 only. Follow the locking design in docs/architecture/laravel.m
   status, source: app/dashboard/walk_in/phone, notes, cancel reason, price snapshot),
   booking_services (snapshot of name, price, duration), booking_status_history.
 - Status machine with an enum and allowed transitions: pending → confirmed → arrived →
-  in_service → completed; plus cancelled, no_show, rescheduled. Invalid transitions throw.
+  in_service → completed; plus cancelled, no_show. Reschedule keeps the same booking and
+  logs old/new times in booking_status_history (no `rescheduled` status — ADR-004).
+  Salon setting booking.auto_confirm (default on). Overlap uses blocked_until (ends_at +
+  buffer). No-show fee: record as an amount owed on the customer (collected at POS in
+  Phase 6) unless Q9 in spec-review.md was answered otherwise. Start with a one-day
+  calendar-library spike (FullCalendar Premium vs custom) and record it as an ADR.
+  Invalid transitions throw.
 - AvailabilityService: GET /api/v1/branches/{id}/slots?services[]=&barber=any|id&date=
   returns slots honouring schedules, breaks, time off, existing bookings, buffers, lead time.
 - Actions: CreateBooking (transaction + SELECT FOR UPDATE on barber + overlap re-check),

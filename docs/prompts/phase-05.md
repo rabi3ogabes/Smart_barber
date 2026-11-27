@@ -17,6 +17,10 @@ Implement PHASE 5 only (apps/customer + any API gaps in backend).
   calendar, directions, cancel with policy text.
 - Profile: name, photo, phone, language, theme, notification settings, delete account
   request (store compliance), logout.
+- Reviews: "Rate your visit" (1–5 + comment) after a completed booking → booking_reviews;
+  moderation list in the dashboard (review.moderate). Feeds barber rating.
+- Salon search returns only salons with listing.enabled (default off); QR/deep link first.
+- Account deletion follows spec-review item 12 (anonymise salon profiles, keep invoices).
 - Push: register FCM token, open booking detail from notification deep link.
 - Network: offline banner, timeout/retry UI, session expiry → re-login keeps intended route.
 Tests: widget tests per screen state, integration test of full booking in AR and EN,

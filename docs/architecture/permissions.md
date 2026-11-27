@@ -1,6 +1,6 @@
 # Permissions
 
-Status: **Proposed (Phase 0)**. Permissions use spatie/laravel-permission with teams (team = salon). Roles are per salon and are copied from platform templates when a salon is created. Owners may later create custom roles from these keys (see [spec-review](spec-review.md) item 15).
+Status: **Accepted (Phase 0, 2026-11-27)**. Permissions use spatie/laravel-permission with teams (team = salon). Roles are per salon and are copied from platform templates when a salon is created. Owners may later create custom roles from these keys (see [spec-review](spec-review.md) item 15).
 
 ## Scope legend
 

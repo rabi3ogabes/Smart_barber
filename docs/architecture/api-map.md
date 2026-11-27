@@ -1,6 +1,6 @@
 # API map — phases 1–6
 
-Status: **Proposed (Phase 0)**. All paths are under `/api/v1`. Responses use the envelope from `laravel.md`. `{x}` path parameters are ULID `public_id`s, except `{salon}`, which accepts the slug or the public_id.
+Status: **Accepted (Phase 0, 2026-11-27)**. All paths are under `/api/v1`. Responses use the envelope from `laravel.md`. `{x}` path parameters are ULID `public_id`s, except `{salon}`, which accepts the slug or the public_id.
 
 ## Auth and tenant rules
 

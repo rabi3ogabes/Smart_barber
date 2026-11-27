@@ -1,6 +1,6 @@
 # ADR-003 — Money, tax and immutable financial records
 
-Status: Proposed · Phase 0 · Irreversible (column types, ledger model)
+Status: Accepted (2026-11-27, owner approved defaults) · Phase 0 · Irreversible (column types, ledger model)
 
 ## Context
 The product launches in Qatar (QAR, 2 decimals) and plans other GCC countries. Kuwaiti, Bahraini and Omani currencies (KWD, BHD, OMR) have **3** decimals. Salons need trustworthy totals, refunds and commission.

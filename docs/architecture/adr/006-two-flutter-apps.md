@@ -1,6 +1,6 @@
 # ADR-006 — Two Flutter apps sharing three packages
 
-Status: Proposed · Phase 0
+Status: Accepted (2026-11-27, owner approved defaults) · Phase 0
 
 ## Context
 Customers need a light, polished, store-friendly app. Barbers and reception need a tool app (today's chair, queue, POS, camera for history, commission). App Store review treats staff-only features in a consumer app with suspicion, and the two audiences need different release cadences.

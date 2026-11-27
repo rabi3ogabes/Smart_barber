@@ -1,6 +1,6 @@
 # Entity-relationship design (ERD)
 
-Status: **Proposed (Phase 0)**. This covers every table planned for phases 1–15, grouped by module. The schema is built one phase at a time, and each phase creates only its own tables.
+Status: **Accepted (Phase 0, 2026-11-27)**. This covers every table planned for phases 1–15, grouped by module. The schema is built one phase at a time, and each phase creates only its own tables.
 
 ## Conventions (apply to every table unless stated)
 
