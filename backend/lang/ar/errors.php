@@ -42,4 +42,12 @@ return [
     'BARBER_NOT_ELIGIBLE' => 'هذا الحلاق لا يقدم الخدمة المختارة في هذا الفرع.',
     'CATALOG_SELECTION_INVALID' => 'هذا المزيج من الخدمات والإضافات غير متاح.',
     'CATEGORY_NOT_EMPTY' => 'انقل خدمات هذه الفئة أو احذفها أولًا.',
+    'BOOKING_SLOT_TAKEN' => 'تم حجز هذا الوقت للتو. يرجى اختيار وقت آخر.',
+    'BOOKING_OUTSIDE_HOURS' => 'الحلاق لا يعمل في هذا الوقت.',
+    'BOOKING_LEAD_TIME' => 'هذا الوقت قريب جدًا. يرجى اختيار وقت لاحق.',
+    'BOOKING_TOO_FAR_AHEAD' => 'هذا التاريخ بعيد جدًا للحجز.',
+    'BOOKING_IN_PAST' => 'هذا الوقت قد مضى.',
+    'BOOKING_INVALID_TRANSITION' => 'لا يمكن تغيير الحجز بهذه الطريقة في حالته الحالية.',
+    'BOOKING_CANCEL_WINDOW_PASSED' => 'فات وقت تعديل هذا الحجز عبر التطبيق. يرجى الاتصال بالصالون.',
+    'BOOKING_NOT_STARTED' => 'لم يبدأ الموعد بعد.',
 ];

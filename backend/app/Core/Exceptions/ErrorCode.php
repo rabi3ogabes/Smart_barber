@@ -49,6 +49,14 @@ enum ErrorCode: string
     case BarberNotEligible = 'BARBER_NOT_ELIGIBLE';
     case CatalogSelectionInvalid = 'CATALOG_SELECTION_INVALID';
     case CategoryNotEmpty = 'CATEGORY_NOT_EMPTY';
+    case BookingSlotTaken = 'BOOKING_SLOT_TAKEN';
+    case BookingOutsideHours = 'BOOKING_OUTSIDE_HOURS';
+    case BookingLeadTime = 'BOOKING_LEAD_TIME';
+    case BookingTooFarAhead = 'BOOKING_TOO_FAR_AHEAD';
+    case BookingInPast = 'BOOKING_IN_PAST';
+    case BookingInvalidTransition = 'BOOKING_INVALID_TRANSITION';
+    case BookingCancelWindowPassed = 'BOOKING_CANCEL_WINDOW_PASSED';
+    case BookingNotStarted = 'BOOKING_NOT_STARTED';
 
     public function status(): int
     {
@@ -57,7 +65,10 @@ enum ErrorCode: string
             self::IdempotencyKeyReused, self::IdempotencyKeyInvalid, self::InvalidCredentials,
             self::LastActiveBranch, self::LastActiveOwner, self::CannotChangeOwnAccess, self::InvitationAccountMismatch,
             self::AlreadyMember, self::ScheduleRangesOverlap, self::TimeOffNotPending, self::TimeOffOverlaps,
-            self::ServiceUnavailableAtBranch, self::BarberNotEligible, self::CatalogSelectionInvalid, self::CategoryNotEmpty => 422,
+            self::ServiceUnavailableAtBranch, self::BarberNotEligible, self::CatalogSelectionInvalid, self::CategoryNotEmpty,
+            self::BookingOutsideHours, self::BookingLeadTime, self::BookingTooFarAhead, self::BookingInPast,
+            self::BookingCancelWindowPassed, self::BookingNotStarted => 422,
+            self::BookingSlotTaken, self::BookingInvalidTransition => 409,
             self::InvitationInvalid => 410,
             self::RoleNotAssignable => 403,
             self::Unauthenticated, self::RefreshTokenInvalid, self::RefreshTokenReused,

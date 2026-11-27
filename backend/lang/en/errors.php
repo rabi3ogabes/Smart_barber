@@ -42,4 +42,12 @@ return [
     'BARBER_NOT_ELIGIBLE' => 'This barber doesn’t offer the selected service here.',
     'CATALOG_SELECTION_INVALID' => 'This combination of services and add-ons isn’t available.',
     'CATEGORY_NOT_EMPTY' => 'Move or remove the services in this category first.',
+    'BOOKING_SLOT_TAKEN' => 'This time was just taken. Please choose another slot.',
+    'BOOKING_OUTSIDE_HOURS' => 'The barber isn’t working at this time.',
+    'BOOKING_LEAD_TIME' => 'This time is too soon. Please choose a later slot.',
+    'BOOKING_TOO_FAR_AHEAD' => 'This date is too far ahead to book.',
+    'BOOKING_IN_PAST' => 'This time has already passed.',
+    'BOOKING_INVALID_TRANSITION' => 'This booking can’t be changed that way in its current status.',
+    'BOOKING_CANCEL_WINDOW_PASSED' => 'It’s too late to change this booking online. Please call the salon.',
+    'BOOKING_NOT_STARTED' => 'The appointment hasn’t started yet.',
 ];
