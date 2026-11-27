@@ -38,4 +38,8 @@ return [
     'SCHEDULE_RANGES_OVERLAP' => 'Some time ranges overlap. Please check the hours.',
     'TIME_OFF_NOT_PENDING' => 'This request has already been decided.',
     'TIME_OFF_OVERLAPS' => 'This overlaps another time-off request.',
+    'SERVICE_UNAVAILABLE_AT_BRANCH' => 'This service isn’t offered at this branch.',
+    'BARBER_NOT_ELIGIBLE' => 'This barber doesn’t offer the selected service here.',
+    'CATALOG_SELECTION_INVALID' => 'This combination of services and add-ons isn’t available.',
+    'CATEGORY_NOT_EMPTY' => 'Move or remove the services in this category first.',
 ];

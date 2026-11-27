@@ -45,6 +45,10 @@ enum ErrorCode: string
     case ScheduleRangesOverlap = 'SCHEDULE_RANGES_OVERLAP';
     case TimeOffNotPending = 'TIME_OFF_NOT_PENDING';
     case TimeOffOverlaps = 'TIME_OFF_OVERLAPS';
+    case ServiceUnavailableAtBranch = 'SERVICE_UNAVAILABLE_AT_BRANCH';
+    case BarberNotEligible = 'BARBER_NOT_ELIGIBLE';
+    case CatalogSelectionInvalid = 'CATALOG_SELECTION_INVALID';
+    case CategoryNotEmpty = 'CATEGORY_NOT_EMPTY';
 
     public function status(): int
     {
@@ -52,7 +56,8 @@ enum ErrorCode: string
             self::ValidationFailed, self::OtpInvalid, self::OtpExpired, self::TwoFactorInvalid,
             self::IdempotencyKeyReused, self::IdempotencyKeyInvalid, self::InvalidCredentials,
             self::LastActiveBranch, self::LastActiveOwner, self::CannotChangeOwnAccess, self::InvitationAccountMismatch,
-            self::AlreadyMember, self::ScheduleRangesOverlap, self::TimeOffNotPending, self::TimeOffOverlaps => 422,
+            self::AlreadyMember, self::ScheduleRangesOverlap, self::TimeOffNotPending, self::TimeOffOverlaps,
+            self::ServiceUnavailableAtBranch, self::BarberNotEligible, self::CatalogSelectionInvalid, self::CategoryNotEmpty => 422,
             self::InvitationInvalid => 410,
             self::RoleNotAssignable => 403,
             self::Unauthenticated, self::RefreshTokenInvalid, self::RefreshTokenReused,

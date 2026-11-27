@@ -58,7 +58,7 @@ Customer-facing reads (staff and dashboard management goes through Inertia, list
 | Method | Path | Auth | Perm | Idem | Notes |
 |---|---|---|---|---|---|
 | GET | `/branches/{branch}/service-categories` | public | — | | Only categories with services available in this branch |
-| GET | `/branches/{branch}/services` | public | — | | `?category=`; branch price, duration, add-ons, bundles; online-bookable only |
+| GET | `/branches/{branch}/services` | public | — | | `?category=`; returns `{services[], bundles[]}`: branch price, duration, add-ons; online-bookable, active, available at the branch; bundles only when all their services are |
 | GET | `/branches/{branch}/services/{service}` | public | — | | Includes `barbers[]` who perform it, with their price when it differs |
 
 ## Phase 4 — Booking engine
@@ -137,7 +137,7 @@ These routes call the same Actions as the API. They are listed so permissions ge
 | 2 | Staff | `/staff` index; `/staff/invitations` store, `{i}/resend`, `{i}` destroy (revoke); `/staff/{m}/access` (roles and branches); `/staff/{m}/status`; `/barbers/{b}/profile`; public `/invitations/{token}` show and accept | `staff.*` |
 | 2 | Schedules | `/schedules` (weekly grid), `/schedules/{barber}` update, `/schedules/{barber}/overrides` store, `/schedule-overrides/{o}` destroy; `/time-off` index and store, `/time-off/{r}/decision`, `/time-off/{r}/cancel` | `schedule.*`, `timeoff.*` |
 | 2 | Audit | `/audit-log` (filter by event group, cursor pages) | `audit_log.view` |
-| 3 | Catalog | `/service-categories` (+ reorder), `/services` (+ branch pricing, barbers, add-ons tabs), `/addons`, `/bundles` | `service.*` |
+| 3 | Catalog | `/services` (page with Services, Add-ons, Bundles tabs); `/service-categories` store, `order` (reorder), `{c}` update and destroy (empty only); `/services` store, `{s}` update, `{s}/image`, `{s}/branches/{b}` (availability and price), `{s}/barbers`, `{s}/addons`; `/service-addons`, `/service-bundles` store and update | `service.view`, `service.manage`, `service.price.update` |
 | 4 | Calendar | `/calendar` (day and week), JSON: `/calendar/events`, `/calendar/slots` | `booking.view` |
 | 4 | Bookings | `/bookings` index; store, reschedule, cancel, status actions (JSON responses for drawer and drag) | `booking.*` |
 | 4 | Customers | `/customers` index, show, store, update | `customer.*` |

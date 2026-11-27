@@ -38,4 +38,8 @@ return [
     'SCHEDULE_RANGES_OVERLAP' => 'بعض الفترات الزمنية متداخلة. يرجى مراجعة الأوقات.',
     'TIME_OFF_NOT_PENDING' => 'تم البت في هذا الطلب مسبقاً.',
     'TIME_OFF_OVERLAPS' => 'يتداخل هذا مع طلب إجازة آخر.',
+    'SERVICE_UNAVAILABLE_AT_BRANCH' => 'هذه الخدمة غير متوفرة في هذا الفرع.',
+    'BARBER_NOT_ELIGIBLE' => 'هذا الحلاق لا يقدم الخدمة المختارة في هذا الفرع.',
+    'CATALOG_SELECTION_INVALID' => 'هذا المزيج من الخدمات والإضافات غير متاح.',
+    'CATEGORY_NOT_EMPTY' => 'انقل خدمات هذه الفئة أو احذفها أولًا.',
 ];

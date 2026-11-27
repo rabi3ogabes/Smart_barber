@@ -12,7 +12,7 @@ interface Entry { id: number; event: string; actor: string | null; subject: stri
 const props = defineProps<{ logs: Entry[]; next: string | null; prev: string | null; filter: string | null }>();
 const { t, te, locale } = useI18n();
 
-const groups = ['membership', 'staff', 'salons', 'branches', 'branch_closures', 'barbers', 'time_off_requests', 'auth'];
+const groups = ['membership', 'staff', 'salons', 'branches', 'branch_closures', 'barbers', 'time_off_requests', 'catalog', 'services', 'auth'];
 const filter = ref(props.filter ?? 'all');
 const applyFilter = (v: string): void => router.get('/audit-log', v && v !== 'all' ? { event: v } : {}, { preserveScroll: true });
 const eventLabel = (e: string): string => (te(`ui.audit.events.${e.replace('.', '__')}`) ? t(`ui.audit.events.${e.replace('.', '__')}`) : e);

@@ -105,6 +105,7 @@ Usage metering follows the same idea: `Core\Contracts\UsageMeter::record(salon, 
 **Read services:** `PricingService::quote(services, addons, barber, branch, customer, adjusters…)`, `CatalogQuery::forBranch()`, `EligibleBarbers::for(services, branch)`.
 **Emits:** `ServicePriceChanged`.
 **Depends on:** Staff, Salon, Core.
+**As built (Phase 3):** `PricingService::quote(branch, services, addons, barber, customer, bundles)` returns a `Quote` of `QuoteLine`s (unit price + its source, duration, tax, total) and runs every tagged `PriceAdjuster` (`PriceAdjuster::TAG`); `branchPrices()` and `servicePriceAt()` serve catalog listings. Actions: `SaveCategory`, `ReorderCategories`, `DeleteCategory`, `SaveService`, `SetBranchPricing`, `AssignBarberServices`, `SaveAddon`, `SaveBundle`, `UploadServiceImage`. Every price change is audited as `catalog.price_changed` (scope base, branch, barber, addon or bundle; old/new minor units) and emits `ServicePriceChanged`. `CatalogQuery`/`EligibleBarbers` are not separate classes yet: the public catalog controller and the pricing rules cover them until Booking (Phase 4) needs them.
 
 ### Booking (L4)
 **Responsibility:** the bookings lifecycle, the status machine, AvailabilityService, the locking create/reschedule path, the calendar broadcast, reminder scheduling, reviews.

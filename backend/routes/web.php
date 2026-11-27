@@ -73,6 +73,7 @@ Route::domain('{salon_slug}.'.$domain)
                 // Module routes (modules.md): each module owns its dashboard routes.
                 require base_path('app/Modules/Salon/routes/web.php');
                 require base_path('app/Modules/Staff/routes/web.php');
+                require base_path('app/Modules/Catalog/routes/web.php');
             });
         });
     });

@@ -1,8 +1,9 @@
 import '../css/app.css';
 
 import { createInertiaApp } from '@inertiajs/vue3';
+import { ConfigProvider } from 'reka-ui';
 import type { DefineComponent } from 'vue';
-import { createApp, h } from 'vue';
+import { computed, createApp, h } from 'vue';
 import { i18n } from './i18n';
 import type { SharedProps } from './types';
 
@@ -21,7 +22,9 @@ createInertiaApp({
         const shared = props.initialPage.props as unknown as SharedProps;
         i18n.global.locale.value = shared.locale ?? 'ar';
 
-        createApp({ render: () => h(App, props) })
+        // Reka primitives (tabs, selects, menus, dialogs) default to LTR; give them the locale's direction.
+        const dir = computed(() => (i18n.global.locale.value === 'ar' ? 'rtl' : 'ltr'));
+        createApp({ render: () => h(ConfigProvider, { dir: dir.value }, () => h(App, props)) })
             .use(plugin)
             .use(i18n)
             .mount(el);

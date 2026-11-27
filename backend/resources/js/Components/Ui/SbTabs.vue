@@ -5,10 +5,11 @@ defineProps<{ tabs: { value: string; label: string }[] }>();
 const model = defineModel<string>();
 </script>
 
+<!-- Reka reports the indicator offset from the physical left edge, so anchor it there in both directions (end = left in RTL). -->
 <template>
     <TabsRoot v-model="model" class="flex flex-col gap-4">
         <TabsList class="relative flex gap-1 overflow-x-auto border-b border-border">
-            <TabsIndicator class="absolute bottom-0 h-0.5 w-[var(--reka-tabs-indicator-size)] translate-x-[var(--reka-tabs-indicator-position)] rounded-pill bg-accent transition-[width,transform] duration-base ease-sb" />
+            <TabsIndicator class="absolute bottom-0 h-0.5 ltr:start-0 rtl:end-0 w-[var(--reka-tabs-indicator-size)] translate-x-[var(--reka-tabs-indicator-position)] rounded-pill bg-accent transition-[width,transform] duration-base ease-sb" />
             <TabsTrigger
                 v-for="tab in tabs"
                 :key="tab.value"
