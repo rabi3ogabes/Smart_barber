@@ -14,7 +14,7 @@ use App\Core\Tenancy\Models\Salon;
 final class Menu
 {
     /** Phases already delivered; an item is clickable when its phase is in this list. */
-    private const SHIPPED_PHASES = [1, 2, 3];
+    private const SHIPPED_PHASES = [1, 2, 3, 4];
 
     /**
      * @return list<array{key: string, label: string, icon: string, items: list<array<string, mixed>>}>

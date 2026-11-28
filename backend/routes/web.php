@@ -74,6 +74,8 @@ Route::domain('{salon_slug}.'.$domain)
                 require base_path('app/Modules/Salon/routes/web.php');
                 require base_path('app/Modules/Staff/routes/web.php');
                 require base_path('app/Modules/Catalog/routes/web.php');
+                require base_path('app/Modules/Customer/routes/web.php');
+                require base_path('app/Modules/Booking/routes/web.php');
             });
         });
     });

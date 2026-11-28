@@ -9,12 +9,15 @@ use App\Core\Tenancy\Models\Branch;
 use App\Core\Tenancy\Models\SalonMembership;
 use App\Core\Tenancy\Tenancy;
 use App\Core\Tenancy\TenantNotResolved;
+use App\Modules\Booking\Models\Booking;
 use App\Modules\Catalog\Models\BarberService;
 use App\Modules\Catalog\Models\BranchService;
 use App\Modules\Catalog\Models\Service;
 use App\Modules\Catalog\Models\ServiceAddon;
 use App\Modules\Catalog\Models\ServiceBundle;
 use App\Modules\Catalog\Models\ServiceCategory;
+use App\Modules\Customer\Models\Customer;
+use App\Modules\Customer\Models\CustomerDue;
 use App\Modules\Salon\Models\BranchClosure;
 use App\Modules\Salon\Models\BranchOpeningHour;
 use App\Modules\Staff\Models\Barber;
@@ -86,6 +89,15 @@ dataset('tenant models', [
     'service bundles' => [fn () => ServiceBundle::query()->create(['name' => ['ar' => 'x', 'en' => 'x'], 'price' => 1000])],
     'branch prices' => [fn () => BranchService::query()->create(['branch_id' => Branch::query()->value('id'), 'service_id' => Service::factory()->create()->id, 'price_override' => 500])],
     'barber prices' => [fn () => BarberService::query()->create(['barber_id' => Barber::factory()->create()->id, 'service_id' => Service::factory()->create()->id, 'price_override' => 500])],
+    // Phase 4
+    'customers' => [fn () => Customer::query()->create(['name' => 'X', 'phone' => '+97455000099'])],
+    'customer dues' => [fn () => CustomerDue::query()->create(['customer_id' => Customer::query()->create(['name' => 'Y', 'phone' => '+97455000098'])->id, 'type' => 'no_show_fee', 'amount' => 100, 'currency' => 'QAR'])],
+    'bookings' => [function () {
+        $barber = Barber::factory()->create();
+        $customer = Customer::query()->create(['name' => 'Z', 'phone' => '+97455000097']);
+
+        return Booking::query()->create(['branch_id' => Branch::query()->value('id'), 'customer_id' => $customer->id, 'barber_id' => $barber->id, 'starts_at' => '2027-01-04 07:00:00', 'ends_at' => '2027-01-04 07:30:00', 'blocked_until' => '2027-01-04 07:35:00', 'status' => 'confirmed', 'source' => 'dashboard', 'subtotal_amount' => 100, 'total_amount' => 100, 'currency' => 'QAR', 'quote_snapshot' => []]);
+    }],
 ]);
 
 it('isolates', function (Closure $make) {

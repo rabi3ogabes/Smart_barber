@@ -12,6 +12,7 @@ use App\Modules\Booking\Actions\RescheduleBooking;
 use App\Modules\Booking\Availability\AvailabilityService;
 use App\Modules\Booking\Enums\BookingSource;
 use App\Modules\Booking\Enums\BookingStatus;
+use App\Modules\Booking\Events\BookingChanged;
 use App\Modules\Booking\Events\BookingCreated;
 use App\Modules\Booking\Events\BookingRescheduled;
 use App\Modules\Booking\Jobs\SendBookingReminder;
@@ -256,4 +257,16 @@ it('queues 24h and 2h reminders that ignore moved bookings', function () {
     $channel2 = Mockery::mock(NotificationChannel::class);
     $channel2->shouldReceive('notify')->once();
     $f->run(fn () => $current->handle($channel2));
+});
+
+it('broadcasts calendar changes on the branch channel after commit', function () {
+    Event::fake([BookingChanged::class]);
+    $f = F::make($this);
+    $booking = book($f, F::at('10:00'));
+    $f->run(fn () => app(ChangeBookingStatus::class)->markArrived($booking, $f->owner));
+
+    Event::assertDispatched(BookingChanged::class, fn ($e) => $e->action === 'created'
+        && $e->broadcastOn()[0]->name === "private-salon.{$f->salon->public_id}.branch.{$f->branch->public_id}"
+        && $e->broadcastWith() === ['booking' => $booking->public_id, 'action' => 'created']);
+    Event::assertDispatched(BookingChanged::class, fn ($e) => $e->action === 'arrived');
 });

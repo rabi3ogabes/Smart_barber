@@ -15,8 +15,13 @@ final class WebAppExceptionRenderer
 {
     public function __invoke(AppException $e, Request $request): ?Response
     {
-        if ($request->is('api/*') || ($request->expectsJson() && ! $request->header('X-Inertia'))) {
+        if ($request->is('api/*')) {
             return null;
+        }
+        // Dashboard JSON endpoints (calendar drag & drop, comboboxes) get the API envelope, so the
+        // page can read the code (e.g. 409 BOOKING_SLOT_TAKEN with alternatives) and revert.
+        if ($request->expectsJson() && ! $request->header('X-Inertia')) {
+            return ApiResponse::error($e->errorCode, $e->getMessage(), $e->errors, $e->data);
         }
 
         $status = $e->status();

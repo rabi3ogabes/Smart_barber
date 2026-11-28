@@ -98,6 +98,7 @@ Usage metering follows the same idea: `Core\Contracts\UsageMeter::record(salon, 
 **Listens:** `CustomerAccountDeletionRequested` (anonymises in every salon after the retention check).
 **Emits:** `CustomerCreated`.
 **Depends on:** Salon, Core.
+**As built (Phase 4, minimal):** `Customer` (one per salon and phone, optional account link), `FindOrCreateCustomer` (race-safe on the unique phone), `CustomerSearch`, and the append-only `customer_dues` ledger (no-show fees now; settled at the POS in Phase 6). The full CRM (profiles page, notes, merge, export, anonymisation) is a later phase.
 
 ### Catalog (L3)
 **Responsibility:** categories, services, add-ons, bundles, branch and barber overrides, **PricingService** (the only place prices are computed), and the `PriceAdjuster` contract.
@@ -114,6 +115,7 @@ Usage metering follows the same idea: `Core\Contracts\UsageMeter::record(salon, 
 **Emits:** `BookingCreated`, `BookingConfirmed`, `BookingRescheduled`, `BookingCancelled`, `BookingArrived`, `BookingStarted`, `BookingCompleted`, `BookingNoShow`, `ReviewSubmitted`.
 **Listens:** none (it is a source of truth, not a reactor).
 **Depends on:** Catalog, Customer, Staff, Salon, Core.
+**As built (Phase 4):** `CreateBooking`, `RescheduleBooking`, `CancelBooking` and `ChangeBookingStatus` (confirm, markArrived, startService, complete, markNoShow — the prompt's named actions) on a shared `BookingWriter` (READ COMMITTED transaction, `SELECT … FOR UPDATE` on barbers in ascending id order, hours + overlap re-check) and `TransitionBooking` (row lock, allowed transitions only). `AvailabilityService::slots()` and `nextFree()`; `EligibleBarbers::for()` (the "any" order). Events after commit: `BookingCreated/Confirmed/Cancelled/Rescheduled/Completed` and the broadcast `BookingChanged`. `SendBookingReminder` jobs at 24 h and 2 h through `NotificationChannel`. Reviews are not built yet (Phase 5/10).
 
 ### Inventory (L4)
 **Responsibility:** products, suppliers, purchase orders, the movement ledger, branch stock cache, transfers, stocktakes, low-stock alerts.

@@ -58,3 +58,5 @@ Route::middleware(['auth:customer', 'throttle:api'])->group(function (): void {
 require base_path('app/Modules/Salon/routes/api.php');
 require base_path('app/Modules/Staff/routes/api.php');
 require base_path('app/Modules/Catalog/routes/api.php');
+require base_path('app/Modules/Customer/routes/api.php');
+require base_path('app/Modules/Booking/routes/api.php');

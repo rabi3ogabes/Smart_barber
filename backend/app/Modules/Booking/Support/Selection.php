@@ -7,8 +7,6 @@ use App\Core\Exceptions\ErrorCode;
 use App\Modules\Catalog\Models\Service;
 use App\Modules\Catalog\Models\ServiceAddon;
 use App\Modules\Catalog\Models\ServiceBundle;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 /**
  * What the customer wants done: services, add-ons and bundles, resolved from public ids in the
@@ -30,23 +28,35 @@ final readonly class Selection
      */
     public static function fromPublicIds(array $services, array $addons = [], array $bundles = []): self
     {
-        $load = function (string $class, array $ids, array $with = []): array {
-            $ids = array_values(array_unique($ids));
-            /** @var Collection<int, Model> $found */
-            $found = $class::query()->with($with)->whereIn('public_id', $ids)->get()->keyBy('public_id');
-            if ($found->count() !== count($ids)) {
-                throw new AppException(ErrorCode::NotFound);
-            }
-
-            return array_map(fn (string $id) => $found[$id], $ids);
-        };
-
-        $selection = new self($load(Service::class, $services), $load(ServiceAddon::class, $addons), $load(ServiceBundle::class, $bundles, ['services']));
+        $selection = new self(
+            self::ordered(Service::query()->whereIn('public_id', $services)->get()->keyBy('public_id')->all(), $services),
+            self::ordered(ServiceAddon::query()->whereIn('public_id', $addons)->get()->keyBy('public_id')->all(), $addons),
+            self::ordered(ServiceBundle::query()->with('services')->whereIn('public_id', $bundles)->get()->keyBy('public_id')->all(), $bundles),
+        );
         if ($selection->services === [] && $selection->bundles === []) {
             throw new AppException(ErrorCode::CatalogSelectionInvalid, errors: ['services' => [ErrorCode::CatalogSelectionInvalid->message()]]);
         }
 
         return $selection;
+    }
+
+    /**
+     * Models in the order the ids were given; any unknown id (or another salon's) is a 404.
+     *
+     * @template T of \Illuminate\Database\Eloquent\Model
+     *
+     * @param  array<string, T>  $found
+     * @param  list<string>  $ids
+     * @return list<T>
+     */
+    private static function ordered(array $found, array $ids): array
+    {
+        $ids = array_values(array_unique($ids));
+        if (count($found) !== count($ids)) {
+            throw new AppException(ErrorCode::NotFound);
+        }
+
+        return array_map(fn (string $id) => $found[$id] ?? throw new AppException(ErrorCode::NotFound), $ids);
     }
 
     /**

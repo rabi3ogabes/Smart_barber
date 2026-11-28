@@ -3,21 +3,28 @@
 namespace Database\Seeders;
 
 use App\Core\Authorization\PermissionCatalog;
+use App\Core\Exceptions\AppException;
 use App\Core\Identity\Models\User;
 use App\Core\Tenancy\Actions\AddMember;
 use App\Core\Tenancy\Actions\CreateSalon;
 use App\Core\Tenancy\Models\Branch;
 use App\Core\Tenancy\Models\Salon;
 use App\Core\Tenancy\Tenancy;
+use App\Modules\Booking\Actions\CreateBooking;
+use App\Modules\Booking\Enums\BookingSource;
+use App\Modules\Booking\Models\Booking;
+use App\Modules\Booking\Support\Selection;
 use App\Modules\Catalog\Models\BarberService;
 use App\Modules\Catalog\Models\BranchService;
 use App\Modules\Catalog\Models\Service;
 use App\Modules\Catalog\Models\ServiceAddon;
 use App\Modules\Catalog\Models\ServiceBundle;
 use App\Modules\Catalog\Models\ServiceCategory;
+use App\Modules\Customer\Actions\FindOrCreateCustomer;
 use App\Modules\Salon\Actions\SetOpeningHours;
 use App\Modules\Staff\Actions\SetWeeklySchedule;
 use App\Modules\Staff\Models\Barber;
+use Carbon\CarbonImmutable;
 
 /**
  * One demo salon: an owner, a branch manager, one branch with opening hours, two barbers with
@@ -59,6 +66,7 @@ final class DemoSalonBuilder
 
         $this->seedSchedules($salon, $branch, [$barber, $barber2]);
         $this->seedCatalog($salon, $branch, $barber);
+        $this->seedBookings($salon, $branch);
 
         return $accounts;
     }
@@ -126,6 +134,40 @@ final class DemoSalonBuilder
                 foreach ([$haircut, $fade, $kids, $trim, $shave] as $service) {
                     $senior = $barber->user_id === $seniorUser->id && $service->is($haircut);
                     BarberService::query()->create(['barber_id' => $barber->id, 'service_id' => $service->id, 'price_override' => $senior ? 8000 : null]);
+                }
+            }
+        });
+    }
+
+    /**
+     * A few customers and today's / tomorrow's appointments (Phase 4), booked through the real
+     * engine so every rule applies. Times that do not fit the schedule are skipped.
+     */
+    private function seedBookings(Salon $salon, Branch $branch): void
+    {
+        Tenancy::runAs($salon, function () use ($branch): void {
+            if (Booking::query()->exists()) {
+                return;
+            }
+            $customers = collect([['Ahmed Al-Kuwari', '+97455100001'], ['Khalid Al-Mannai', '+97455100002'], ['Yousef Hassan', '+97455100003'], ['Faisal Al-Thani', '+97455100004'], ['Omar Saleh', '+97455100005']])
+                ->map(fn ($c) => app(FindOrCreateCustomer::class)($c[1], $c[0]));
+            $services = Service::query()->orderBy('id')->get()->keyBy(fn (Service $s): string => (string) $s->getTranslation('name', 'en'));
+            $barbers = Barber::query()->orderBy('sort_order')->orderBy('id')->get();
+            $plan = [
+                [0, '16:00', 0, ['Haircut']], [0, '16:45', 1, ['Skin fade']], [0, '17:30', 2, ['Beard trim']],
+                [0, '18:00', 3, ['Haircut', 'Beard trim']], [0, '19:00', 4, ['Hot towel shave']],
+                [1, '15:00', 1, ['Skin fade']], [1, '16:00', 0, ['Kids cut']], [1, '20:00', 3, ['Haircut']],
+            ];
+            foreach ($plan as $i => [$day, $time, $customer, $names]) {
+                $startsAt = CarbonImmutable::parse(now($branch->timezone)->addDays($day)->toDateString().' '.$time, $branch->timezone)->utc();
+                if ($startsAt->isPast()) {
+                    continue;
+                }
+                $selection = new Selection(array_values(array_filter(array_map(fn ($n) => $services->get($n), $names))));
+                try {
+                    app(CreateBooking::class)($branch, $customers[$customer], $selection, $startsAt, BookingSource::Dashboard, $barbers[$i % max(1, $barbers->count())] ?? null);
+                } catch (AppException) {
+                    // outside that barber's hours or taken: skip
                 }
             }
         });

@@ -70,9 +70,9 @@ Customer-facing reads (staff and dashboard management goes through Inertia, list
 | POST | `/customer/bookings` | customer | own | ✓ | `{branch, services[], addons[], barber\|any, starts_at, notes}`; 409 `BOOKING_SLOT_TAKEN` with fresh slots |
 | GET | `/customer/bookings` | customer | own | | `?scope=upcoming\|past`, cursor pagination, across salons |
 | GET | `/customer/bookings/{booking}` | customer | own | | With the status timeline and the cancellation policy |
-| POST | `/customer/bookings/{booking}/reschedule` | customer | own | ✓ | `{starts_at, barber?}`; policy window enforced |
+| POST | `/customer/bookings/{booking}/reschedule` | customer | own | ✓ | `{starts_at, barber?}`; the cancellation window applies (`BOOKING_CANCEL_WINDOW_PASSED`) |
 | POST | `/customer/bookings/{booking}/cancel` | customer | own | ○ | `{reason}`; 422 `BOOKING_CANCEL_WINDOW_PASSED` |
-| GET | `/customer/bookings/{booking}/calendar.ics` | customer | own | | Add to calendar |
+| GET | `/customer/bookings/{booking}/calendar.ics` | customer | own | | Add to calendar (**not built yet**, moved to Phase 5 with the app screens) |
 | GET | `/staff/bookings` | staff | `booking.view` | | `?date=&barber=`; barbers get their own |
 | GET | `/staff/bookings/{booking}` | staff | `booking.view` | | |
 | POST | `/staff/bookings` | staff | `booking.create` | ✓ | Walk-in or phone booking; `{customer\|new_customer, …}` |
@@ -82,7 +82,7 @@ Customer-facing reads (staff and dashboard management goes through Inertia, list
 | POST | `/staff/bookings/{booking}/arrive` | staff | `booking.status.update` | | |
 | POST | `/staff/bookings/{booking}/start` | staff | `booking.status.update` | | |
 | POST | `/staff/bookings/{booking}/complete` | staff | `booking.status.update` | ○ | |
-| POST | `/staff/bookings/{booking}/no-show` | staff | `booking.no_show` | | |
+| POST | `/staff/bookings/{booking}/no-show` | staff | `booking.no_show` | | `{waive_fee?}`; only after the start; the salon's fee is recorded as owed (`customer_dues`) |
 | GET | `/staff/customers` | staff | `customer.view` | | `?q=` by name or phone (masked for barbers) |
 | POST | `/staff/customers` | staff | `customer.create` | ○ | Quick create; returns the existing customer when the phone matches |
 
@@ -138,7 +138,7 @@ These routes call the same Actions as the API. They are listed so permissions ge
 | 2 | Schedules | `/schedules` (weekly grid), `/schedules/{barber}` update, `/schedules/{barber}/overrides` store, `/schedule-overrides/{o}` destroy; `/time-off` index and store, `/time-off/{r}/decision`, `/time-off/{r}/cancel` | `schedule.*`, `timeoff.*` |
 | 2 | Audit | `/audit-log` (filter by event group, cursor pages) | `audit_log.view` |
 | 3 | Catalog | `/services` (page with Services, Add-ons, Bundles tabs); `/service-categories` store, `order` (reorder), `{c}` update and destroy (empty only); `/services` store, `{s}` update, `{s}/image`, `{s}/branches/{b}` (availability and price), `{s}/barbers`, `{s}/addons`; `/service-addons`, `/service-bundles` store and update | `service.view`, `service.manage`, `service.price.update` |
-| 4 | Calendar | `/calendar` (day and week), JSON: `/calendar/events`, `/calendar/slots` | `booking.view` |
+| 4 | Calendar | `/calendar` (day and week page); JSON: `/calendar/events`, `/calendar/slots`, `/calendar/quote`; `/bookings` list page; JSON: `/bookings` store, `/bookings/{b}` show, `/bookings/{b}/reschedule`, `/bookings/{b}/cancel`, `/bookings/{b}/{confirm\|arrive\|start\|complete\|no-show}`; `/customers/search`, `/customers` (quick create) | `booking.*`, `customer.view`, `customer.create` |
 | 4 | Bookings | `/bookings` index; store, reschedule, cancel, status actions (JSON responses for drawer and drag) | `booking.*` |
 | 4 | Customers | `/customers` index, show, store, update | `customer.*` |
 | 6 | POS | `/pos` (screen), JSON: order, items, discounts, complete, refund | `pos.*`, `payment.*` |
