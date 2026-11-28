@@ -10,6 +10,7 @@ use App\Modules\Salon\Actions\UpdateSalonProfile;
 use App\Modules\Salon\Actions\UploadSalonImage;
 use App\Modules\Salon\Http\Controllers\Api\SalonDirectoryController;
 use App\Modules\Salon\Support\MediaUrl;
+use App\Modules\Salon\Support\SalonQr;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -46,7 +47,8 @@ final class SalonSettingsController
                 'cover_url' => MediaUrl::for($salon->cover_media_id),
                 'listing_enabled' => (bool) Settings::get($salon, SalonDirectoryController::LISTING_KEY, false),
                 'app_code' => $salon->slug,
-                'app_link' => 'smartbarber://salon/'.$salon->slug,
+                'app_link' => SalonQr::link($salon->slug),
+                'app_qr' => SalonQr::svg($salon->slug),
             ],
             'timezones' => ['Asia/Qatar', 'Asia/Riyadh', 'Asia/Dubai', 'Asia/Kuwait', 'Asia/Bahrain', 'Asia/Muscat'],
             'canUpdate' => Access::scope($user, 'salon.settings.update') !== null,

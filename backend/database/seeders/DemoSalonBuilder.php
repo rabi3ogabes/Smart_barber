@@ -11,8 +11,11 @@ use App\Core\Tenancy\Models\Branch;
 use App\Core\Tenancy\Models\Salon;
 use App\Core\Tenancy\Tenancy;
 use App\Modules\Booking\Actions\CreateBooking;
+use App\Modules\Booking\Actions\SubmitReview;
 use App\Modules\Booking\Enums\BookingSource;
+use App\Modules\Booking\Enums\BookingStatus;
 use App\Modules\Booking\Models\Booking;
+use App\Modules\Booking\Models\BookingReview;
 use App\Modules\Booking\Support\Selection;
 use App\Modules\Catalog\Models\BarberService;
 use App\Modules\Catalog\Models\BranchService;
@@ -21,6 +24,7 @@ use App\Modules\Catalog\Models\ServiceAddon;
 use App\Modules\Catalog\Models\ServiceBundle;
 use App\Modules\Catalog\Models\ServiceCategory;
 use App\Modules\Customer\Actions\FindOrCreateCustomer;
+use App\Modules\Customer\Models\Customer;
 use App\Modules\Salon\Actions\SetOpeningHours;
 use App\Modules\Staff\Actions\SetWeeklySchedule;
 use App\Modules\Staff\Models\Barber;
@@ -67,6 +71,7 @@ final class DemoSalonBuilder
         $this->seedSchedules($salon, $branch, [$barber, $barber2]);
         $this->seedCatalog($salon, $branch, $barber);
         $this->seedBookings($salon, $branch);
+        $this->seedReviews($salon, $branch);
 
         return $accounts;
     }
@@ -169,6 +174,48 @@ final class DemoSalonBuilder
                 } catch (AppException) {
                     // outside that barber's hours or taken: skip
                 }
+            }
+        });
+    }
+
+    /**
+     * Past visits with "Rate your visit" reviews (Phase 5), so the moderation page and barber
+     * ratings have real rows. Visits are booked through the engine a week ahead, then moved into the
+     * past and completed — demo data only.
+     */
+    private function seedReviews(Salon $salon, Branch $branch): void
+    {
+        Tenancy::runAs($salon, function () use ($branch): void {
+            if (BookingReview::query()->exists()) {
+                return;
+            }
+            $customers = Customer::query()->orderBy('id')->get();
+            $haircut = Service::query()->get()->first(fn (Service $s) => $s->getTranslation('name', 'en') === 'Haircut');
+            if ($customers->isEmpty() || $haircut === null) {
+                return;
+            }
+            $reviews = [
+                [5, 'Best fade in Doha. Yousef took his time and it shows.'],
+                [4, 'Great cut, waited 10 minutes past my time.'],
+                [5, null],
+                [2, 'Rushed and the beard line was uneven.'],
+            ];
+            foreach ($reviews as $i => [$rating, $comment]) {
+                $day = now($branch->timezone)->addDays(8 + $i)->toDateString();
+                try {
+                    $booking = app(CreateBooking::class)($branch, $customers[$i % $customers->count()], new Selection([$haircut]),
+                        CarbonImmutable::parse($day.' 11:00', $branch->timezone)->utc(), BookingSource::Dashboard);
+                } catch (AppException) {
+                    continue;
+                }
+                $shift = 8 + $i + 3 * ($i + 1);
+                $booking->forceFill([
+                    'starts_at' => $booking->starts_at->subDays($shift),
+                    'ends_at' => $booking->ends_at->subDays($shift),
+                    'blocked_until' => $booking->blocked_until->subDays($shift),
+                    'status' => BookingStatus::Completed,
+                ])->save();
+                app(SubmitReview::class)($booking, $rating, $comment);
             }
         });
     }

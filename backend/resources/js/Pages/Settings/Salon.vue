@@ -30,10 +30,13 @@ interface Profile {
     listing_enabled: boolean;
     app_code: string;
     app_link: string;
+    app_qr: string;
 }
 
 const props = defineProps<{ profile: Profile; timezones: string[]; canUpdate: boolean }>();
 const { t } = useI18n();
+
+const qrDownload = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(props.profile.app_qr)}`;
 
 const form = useForm({
     name: { ar: props.profile.name.ar ?? '', en: props.profile.name.en ?? '' },
@@ -160,9 +163,16 @@ const section = 'rounded-card border border-border bg-surface p-6 shadow-sm';
                 <section :class="section">
                     <h3 class="text-h4">{{ t('ui.settings.app_title') }}</h3>
                     <p class="mt-1 text-label text-text-secondary">{{ t('ui.settings.app_hint') }}</p>
-                    <div class="mt-5 grid gap-5 sm:grid-cols-2">
-                        <SbInput :model-value="profile.app_code" :label="t('ui.settings.app_code')" readonly ltr />
-                        <SbInput :model-value="profile.app_link" :label="t('ui.settings.app_link')" :hint="t('ui.settings.app_link_hint')" readonly ltr />
+                    <div class="mt-5 flex flex-col gap-5 sm:flex-row sm:items-start">
+                        <figure class="flex shrink-0 flex-col items-center gap-2">
+                            <!-- QR codes must stay dark-on-white to scan, in both themes (same as the 2FA setup). -->
+                            <div class="w-fit rounded-card border border-border bg-white p-2" role="img" :aria-label="t('ui.settings.app_qr')" v-html="profile.app_qr"></div>
+                            <a class="text-label text-accent underline-offset-4 hover:underline" :href="qrDownload" :download="`${profile.app_code}-qr.svg`">{{ t('ui.settings.app_qr_download') }}</a>
+                        </figure>
+                        <div class="grid flex-1 gap-5">
+                            <SbInput :model-value="profile.app_code" :label="t('ui.settings.app_code')" readonly ltr />
+                            <SbInput :model-value="profile.app_link" :label="t('ui.settings.app_link')" :hint="t('ui.settings.app_link_hint')" readonly ltr />
+                        </div>
                     </div>
                     <div class="mt-3"><SbCheckbox v-model="form.listing_enabled" :label="t('ui.settings.listing_enabled')" :description="t('ui.settings.listing_enabled_hint')" /></div>
                 </section>

@@ -98,7 +98,7 @@ Usage metering follows the same idea: `Core\Contracts\UsageMeter::record(salon, 
 **Listens:** `CustomerAccountDeletionRequested` (anonymises in every salon after the retention check).
 **Emits:** `CustomerCreated`.
 **Depends on:** Salon, Core.
-**As built (Phase 4, minimal):** `Customer` (one per salon and phone, optional account link), `FindOrCreateCustomer` (race-safe on the unique phone), `CustomerSearch`, and the append-only `customer_dues` ledger (no-show fees now; settled at the POS in Phase 6). The full CRM (profiles page, notes, merge, export, anonymisation) is a later phase.
+**As built (Phase 4, minimal):** `Customer` (one per salon and phone, optional account link), `FindOrCreateCustomer` (race-safe on the unique phone), `CustomerSearch`, and the append-only `customer_dues` ledger (no-show fees now; settled at the POS in Phase 6). The full CRM (profiles page, notes, merge, export) is a later phase. **Phase 5:** `AnonymiseCustomer` (spec-review item 12) and the listener `AnonymiseAccountProfiles`. The event named `CustomerAccountDeletionRequested` above is built as Core's `CustomerAccountErasing`. The action emits `CustomerAnonymising` before it erases a profile, so higher modules can clear what they own.
 
 ### Catalog (L3)
 **Responsibility:** categories, services, add-ons, bundles, branch and barber overrides, **PricingService** (the only place prices are computed), and the `PriceAdjuster` contract.
@@ -115,7 +115,10 @@ Usage metering follows the same idea: `Core\Contracts\UsageMeter::record(salon, 
 **Emits:** `BookingCreated`, `BookingConfirmed`, `BookingRescheduled`, `BookingCancelled`, `BookingArrived`, `BookingStarted`, `BookingCompleted`, `BookingNoShow`, `ReviewSubmitted`.
 **Listens:** none (it is a source of truth, not a reactor).
 **Depends on:** Catalog, Customer, Staff, Salon, Core.
-**As built (Phase 4):** `CreateBooking`, `RescheduleBooking`, `CancelBooking` and `ChangeBookingStatus` (confirm, markArrived, startService, complete, markNoShow — the prompt's named actions) on a shared `BookingWriter` (READ COMMITTED transaction, `SELECT … FOR UPDATE` on barbers in ascending id order, hours + overlap re-check) and `TransitionBooking` (row lock, allowed transitions only). `AvailabilityService::slots()` and `nextFree()`; `EligibleBarbers::for()` (the "any" order). Events after commit: `BookingCreated/Confirmed/Cancelled/Rescheduled/Completed` and the broadcast `BookingChanged`. `SendBookingReminder` jobs at 24 h and 2 h through `NotificationChannel`. Reviews are not built yet (Phase 5/10).
+**As built (Phase 4):** `CreateBooking`, `RescheduleBooking`, `CancelBooking` and `ChangeBookingStatus` (confirm, markArrived, startService, complete, markNoShow — the prompt's named actions) on a shared `BookingWriter` (READ COMMITTED transaction, `SELECT … FOR UPDATE` on barbers in ascending id order, hours + overlap re-check) and `TransitionBooking` (row lock, allowed transitions only). `AvailabilityService::slots()` and `nextFree()`; `EligibleBarbers::for()` (the "any" order). Events after commit: `BookingCreated/Confirmed/Cancelled/Rescheduled/Completed` and the broadcast `BookingChanged`. `SendBookingReminder` jobs at 24 h and 2 h through `NotificationChannel`. **Phase 5:**
+- **Reviews:** `BookingReview` (one per completed booking; published or hidden), `SubmitReview`, `ModerateReview` (audited), `BarberRating` (the cached `barbers.rating_avg/count`, always recomputed from published reviews) and `BookingReviewPolicy` (`review.moderate`).
+- **Customer app:** `CustomerHomeController` (`/customer/salons`, `/customer/home`) and `BookingCalendar` (`.ics`). `CustomerBookings` resolves a booking only through the account's own profiles.
+- **Erasure:** the listener `ClearAnonymisedCustomerBookings` (on `CustomerAnonymising`) cancels upcoming bookings and clears booking notes and review comments.
 
 ### Inventory (L4)
 **Responsibility:** products, suppliers, purchase orders, the movement ledger, branch stock cache, transfers, stocktakes, low-stock alerts.

@@ -117,7 +117,7 @@ class _HomeContent extends ConsumerWidget {
                       ),
                       const SizedBox(width: SbSpace.sm),
                       Expanded(
-                        child: SbButton(label: l.cancelBooking, variant: SbButtonVariant.ghost, onPressed: () => BookingDetailRoute(id: next.id).push<void>(context)),
+                        child: SbButton(label: SbLocalizations.of(context).cancel, variant: SbButtonVariant.ghost, onPressed: () => BookingDetailRoute(id: next.id).push<void>(context)),
                       ),
                     ],
                   )

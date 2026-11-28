@@ -72,7 +72,7 @@ Customer-facing reads (staff and dashboard management goes through Inertia, list
 | GET | `/customer/bookings/{booking}` | customer | own | | With the status timeline and the cancellation policy |
 | POST | `/customer/bookings/{booking}/reschedule` | customer | own | ✓ | `{starts_at, barber?}`; the cancellation window applies (`BOOKING_CANCEL_WINDOW_PASSED`) |
 | POST | `/customer/bookings/{booking}/cancel` | customer | own | ○ | `{reason}`; 422 `BOOKING_CANCEL_WINDOW_PASSED` |
-| GET | `/customer/bookings/{booking}/calendar.ics` | customer | own | | Add to calendar (**not built yet**, moved to Phase 5 with the app screens) |
+| GET | `/customer/bookings/{booking}/calendar.ics` | customer | own | | Add to calendar: an RFC 5545 file with a stable UID, in UTC (built in Phase 5) |
 | GET | `/staff/bookings` | staff | `booking.view` | | `?date=&barber=`; barbers get their own |
 | GET | `/staff/bookings/{booking}` | staff | `booking.view` | | |
 | POST | `/staff/bookings` | staff | `booking.create` | ✓ | Walk-in or phone booking; `{customer\|new_customer, …}` |
@@ -90,17 +90,32 @@ Broadcast channels (Reverb, private): `salon.{salon}.branch.{branch}` (calendar 
 
 ## Phase 5 — Customer app core
 
+As built. The salon always comes from the path, the code or the booking, never from a client `salon_id`.
+
 | Method | Path | Auth | Perm | Idem | Notes |
 |---|---|---|---|---|---|
-| GET | `/salons/search` | public | — | | `?q=`; returns only salons that allow listing (see spec-review item 2) |
-| GET | `/salons/resolve` | public | — | | `?code=` from a QR code or deep link → salon |
-| GET | `/customer/salons` | customer | own | | Salons this account has a profile in, most recent first |
-| GET | `/customer/home` | customer | own | | `?salon=`; one call returning the next appointment, "Book again" suggestion, popular services and feature flags |
-| POST | `/customer/me/avatar` | customer | own | | Image upload (resized by a job) |
-| GET | `/customer/me/notification-preferences` | customer | own | | |
-| PUT | `/customer/me/notification-preferences` | customer | own | | |
-| POST | `/customer/me/deletion-request` | customer | own | ○ | Starts the anonymisation flow (spec-review item 12) |
-| POST | `/customer/bookings/{booking}/review` | customer | own | ○ | Rating 1–5 and a comment, completed bookings only (spec-review item 6) |
+| GET | `/salons/search` | public | — | | `?q=` (2–60 chars). Only active salons with the setting `listing.enabled` = true (default off, spec-review item 2). Matches the AR/EN name or the slug; max 20 |
+| GET | `/salons/resolve` | public | — | | `?code=`: a slug, a public id, `https://{slug}.{domain}/…`, `https://…/s/{slug}` or `smartbarber://salon/{slug}`. Unknown or inactive → 404 `INVALID_SALON_CODE` |
+| GET | `/customer/salons` | customer | own | | Salons this account has a profile in, most recent visit first |
+| GET | `/customer/home` | customer | own | | `?salon=` (slug or id) and optional `&branch=`. Returns `salon` (with booking policy), the default `branch`, `next_appointment`, `book_again` (ids of the last completed visit), `review_prompt` (a completed visit in the last 14 days without a review), `popular_services` (most booked in 90 days, with branch prices) and `features` (`ai_studio`, `loyalty`) |
+| POST | `/customer/me/avatar` | customer | own | | Multipart `avatar` (jpg/png/webp/heic, ≤ 5 MB, ≥ 96 px). Stored privately (ADR-009); the queued `ResizeAvatar` job crops it to 512 px. Returns the account with `avatar_url` |
+| GET | `/customer/me/notification-preferences` | customer | own | | `{booking_updates, reminders, offers}`; defaults true, true, false |
+| PUT | `/customer/me/notification-preferences` | customer | own | | Any subset of the three booleans. Reminders turned off stop `SendBookingReminder` |
+| POST | `/customer/me/deletion-request` | customer | own | ○ | 202. Revokes every token and device at once, then queues `AnonymiseCustomerAccount` (spec-review item 12, see `modules.md`) |
+| POST | `/customer/bookings/{booking}/review` | customer | own | ○ | `{rating 1–5, comment?}`. Completed bookings only (422 `REVIEW_NOT_ALLOWED`), once (409 `REVIEW_ALREADY_SUBMITTED`, enforced by a unique index). Recomputes the barber's cached rating |
+
+Customer booking responses (`/customer/bookings…`, `next_appointment`) now also carry:
+- `branch`: id, name, address, location, phone and timezone.
+- `salon`: id, slug and name.
+- `review` and `can_review`.
+
+Dashboard routes (salon subdomain):
+
+| Method | Path | Perm | Notes |
+|---|---|---|---|
+| GET | `/reviews` | `review.moderate` | Inertia page: summary (average, published, hidden), filters by status and rating, newest first; branch-scoped moderators see their branches |
+| PUT | `/reviews/{review}` | `review.moderate` | `{status: published\|hidden, note?}`; audited as `review.moderated`; recomputes the barber rating |
+| PUT | `/settings/salon` | `salon.settings.update` | Also takes `listing_enabled` (app search opt-in). The page shows the salon code, the app link and a printable QR |
 
 ## Phase 6 — POS, payments, invoices
 
