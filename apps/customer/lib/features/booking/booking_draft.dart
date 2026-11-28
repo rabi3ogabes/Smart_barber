@@ -25,6 +25,7 @@ class BookingDraftState {
     this.notes = '',
     this.created,
     this.alternatives = const [],
+    this.slotTaken = false,
   });
 
   final BookingStep step;
@@ -48,6 +49,9 @@ class BookingDraftState {
   /// Start times the server suggested after a 409.
   final List<DateTime> alternatives;
 
+  /// The last confirm hit 409: the chosen time went to someone else.
+  final bool slotTaken;
+
   bool get hasSelection => services.isNotEmpty || bundles.isNotEmpty;
 
   BookingSelection? get selection => branch == null
@@ -67,6 +71,7 @@ class BookingDraftState {
     String? notes,
     CustomerBooking? Function()? created,
     List<DateTime>? alternatives,
+    bool? slotTaken,
   }) => BookingDraftState(
     step: step ?? this.step,
     branch: branch ?? this.branch,
@@ -80,6 +85,7 @@ class BookingDraftState {
     notes: notes ?? this.notes,
     created: created != null ? created() : this.created,
     alternatives: alternatives ?? this.alternatives,
+    slotTaken: slotTaken ?? this.slotTaken,
   );
 }
 
@@ -160,9 +166,9 @@ class BookingDraft extends _$BookingDraft {
 
   void chooseBarber(String? barber) => state = state.copyWith(barber: () => barber, slot: () => null, idempotencyKey: () => null);
 
-  void chooseDate(String date) => state = state.copyWith(date: () => date, slot: () => null, idempotencyKey: () => null);
+  void chooseDate(String date) => state = state.copyWith(date: () => date, slot: () => null, idempotencyKey: () => null, slotTaken: false);
 
-  void chooseSlot(Slot slot) => state = state.copyWith(slot: () => slot, idempotencyKey: () => null, alternatives: const []);
+  void chooseSlot(Slot slot) => state = state.copyWith(slot: () => slot, idempotencyKey: () => null);
 
   void setNotes(String notes) => state = state.copyWith(notes: notes);
 
@@ -184,7 +190,7 @@ class BookingDraft extends _$BookingDraft {
         return Confirmed(value);
       case Err(failure: final ApiFailure f) when f.code == 'BOOKING_SLOT_TAKEN':
         final alternatives = (f.data['alternatives'] as List<dynamic>? ?? const []).whereType<String>().map((s) => DateTime.parse(s).toUtc()).toList();
-        state = state.copyWith(step: BookingStep.time, slot: () => null, idempotencyKey: () => null, alternatives: alternatives);
+        state = state.copyWith(step: BookingStep.time, slot: () => null, idempotencyKey: () => null, alternatives: alternatives, slotTaken: true);
         ref.invalidate(slotsProvider);
         return const SlotTaken();
       case Err(:final failure):

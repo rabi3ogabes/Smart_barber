@@ -21,6 +21,7 @@ class SlotPicker extends ConsumerWidget {
     this.selected,
     this.daysAhead = 14,
     this.highlight = const [],
+    this.notice,
   });
 
   final BookingSelection selection;
@@ -33,6 +34,9 @@ class SlotPicker extends ConsumerWidget {
 
   /// Times the server suggested after a 409; shown first.
   final List<DateTime> highlight;
+
+  /// Shown above the times (e.g. "someone just booked that time").
+  final String? notice;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -90,6 +94,23 @@ class SlotPicker extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: SbSpace.lg),
+        if (notice != null) ...[
+          Semantics(
+            liveRegion: true,
+            child: Container(
+              padding: const EdgeInsetsDirectional.all(SbSpace.md),
+              decoration: BoxDecoration(color: context.sbColors.warningSoft, borderRadius: BorderRadius.circular(SbRadius.card)),
+              child: Row(
+                children: [
+                  Icon(Icons.info_outline_rounded, color: context.sbColors.warning),
+                  const SizedBox(width: SbSpace.sm),
+                  Expanded(child: Text(notice!, style: context.sbText.bodyMedium)),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: SbSpace.md),
+        ],
         if (highlight.isNotEmpty) ...[
           Text(l.slotTakenAlternatives, style: context.sbText.titleSmall),
           const SizedBox(height: SbSpace.xs),

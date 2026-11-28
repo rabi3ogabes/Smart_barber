@@ -11,6 +11,7 @@ Future<void> bootstrap() async {
 
   runApp(
     ProviderScope(
+      retry: noProviderRetry,
       overrides: [
         envProvider.overrideWithValue(env),
         preferencesProvider.overrideWithValue(prefs),

@@ -7,6 +7,10 @@ import 'package:smartbarber_customer/app/session.dart';
 
 part 'providers.g.dart';
 
+/// Providers never retry on their own: the network layer already retries safe requests, and a
+/// failure must reach the screen as an error with a retry button (rule 11), not a silent spinner.
+Duration? noProviderRetry(int retryCount, Object error) => null;
+
 /// Overridden in bootstrap.
 @Riverpod(keepAlive: true)
 AppEnv env(Ref ref) => throw UnimplementedError('envProvider must be overridden');

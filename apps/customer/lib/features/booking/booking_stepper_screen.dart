@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:sb_api/sb_api.dart';
+import 'package:sb_core/sb_core.dart';
 import 'package:sb_ui/sb_ui.dart';
 import 'package:smartbarber_customer/app/current_salon.dart';
 import 'package:smartbarber_customer/app/providers.dart';
@@ -52,6 +53,7 @@ class _Stepper extends ConsumerStatefulWidget {
 
 class _StepperState extends ConsumerState<_Stepper> {
   bool _confirming = false;
+  AppFailure? _error;
 
   @override
   void initState() {
@@ -65,8 +67,10 @@ class _StepperState extends ConsumerState<_Stepper> {
   }
 
   Future<void> _confirm() async {
-    final l = AppLocalizations.of(context);
-    setState(() => _confirming = true);
+    setState(() {
+      _confirming = true;
+      _error = null;
+    });
     final outcome = await ref.read(bookingDraftProvider.notifier).confirm();
     if (!mounted) return;
     setState(() => _confirming = false);
@@ -76,9 +80,9 @@ class _StepperState extends ConsumerState<_Stepper> {
           ..invalidate(homeProvider)
           ..invalidate(bookingListProvider);
       case SlotTaken():
-        showMessage(context, l.slotTakenMessage);
+        break; // the time step shows the notice and fresh times
       case ConfirmFailed(:final failure):
-        showFailure(context, failure);
+        setState(() => _error = failure);
     }
   }
 
@@ -145,7 +149,24 @@ class _StepperState extends ConsumerState<_Stepper> {
           child: Padding(
             padding: const EdgeInsetsDirectional.all(SbSpace.lg),
             child: draft.step == BookingStep.summary
-                ? SbButton(label: l.confirmBooking, expand: true, loading: _confirming, onPressed: _confirming ? null : _confirm)
+                ? Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (_error != null) ...[
+                        Semantics(
+                          liveRegion: true,
+                          child: Text(
+                            failureMessage(SbLocalizations.of(context), _error!),
+                            textAlign: TextAlign.center,
+                            style: context.sbText.bodySmall?.copyWith(color: context.sbColors.error),
+                          ),
+                        ),
+                        const SizedBox(height: SbSpace.xs),
+                      ],
+                      SbButton(label: l.confirmBooking, expand: true, loading: _confirming, onPressed: _confirming ? null : _confirm),
+                    ],
+                  )
                 : SbButton(label: SbLocalizations.of(context).continueLabel, expand: true, onPressed: canContinue ? () => notifier.goTo(steps[index + 1]) : null),
           ),
         ),
@@ -384,6 +405,7 @@ class _TimeStep extends ConsumerWidget {
           daysAhead: maxDays.clamp(1, 30),
           selected: draft.slot,
           highlight: draft.alternatives,
+          notice: draft.slotTaken ? AppLocalizations.of(context).slotTakenMessage : null,
           onDate: notifier.chooseDate,
           onSlot: notifier.chooseSlot,
         ),

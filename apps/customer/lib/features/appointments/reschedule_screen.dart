@@ -49,6 +49,7 @@ class _RescheduleState extends ConsumerState<_Reschedule> {
   bool _saving = false;
   String? _key;
   List<DateTime> _alternatives = const [];
+  bool _taken = false;
 
   CustomerBooking get b => widget.booking;
 
@@ -85,10 +86,10 @@ class _RescheduleState extends ConsumerState<_Reschedule> {
         setState(() {
           _slot = null;
           _key = null;
+          _taken = true;
           _alternatives = (f.data['alternatives'] as List<dynamic>? ?? const []).whereType<String>().map((s) => DateTime.parse(s).toUtc()).toList();
         });
         ref.invalidate(slotsProvider);
-        showMessage(context, l.slotTakenMessage);
       case Err(:final failure):
         showFailure(context, failure);
     }
@@ -114,6 +115,7 @@ class _RescheduleState extends ConsumerState<_Reschedule> {
                 daysAhead: maxDays.clamp(1, 30),
                 selected: _slot,
                 highlight: _alternatives,
+                notice: _taken ? l.slotTakenMessage : null,
                 onDate: (d) => setState(() {
                   _date = d;
                   _slot = null;

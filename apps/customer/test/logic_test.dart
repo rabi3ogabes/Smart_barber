@@ -45,6 +45,21 @@ void main() {
 
     test('maps the smartbarber:// scheme to app paths', () {
       expect(customerRedirect(uri: u('smartbarber://booking/01ABC'), session: signedIn, localeChosen: true), '/booking/01ABC');
+      expect(customerRedirect(uri: u('smartbarber://salon/elite'), session: signedIn, localeChosen: true), '/salon/elite');
+    });
+
+    test('asks for a salon before Home and Book, but not for bookings or profile', () {
+      expect(customerRedirect(uri: u('/home'), session: signedIn, localeChosen: true, salonChosen: false), '/salon');
+      expect(customerRedirect(uri: u('/book'), session: signedIn, localeChosen: true, salonChosen: false), '/salon');
+      expect(customerRedirect(uri: u('/login'), session: signedIn, localeChosen: true, salonChosen: false), '/salon');
+      expect(customerRedirect(uri: u('/booking/01ABC'), session: signedIn, localeChosen: true, salonChosen: false), isNull);
+      expect(customerRedirect(uri: u('/profile'), session: signedIn, localeChosen: true, salonChosen: false), isNull);
+      expect(customerRedirect(uri: u('/salon/elite'), session: signedIn, localeChosen: true, salonChosen: false), isNull);
+    });
+
+    test('a notification deep link survives sign-in', () {
+      expect(customerRedirect(uri: u('/booking/01ABC'), session: signedOut, localeChosen: true), '/login?from=%2Fbooking%2F01ABC');
+      expect(customerRedirect(uri: u('/login?from=%2Fbooking%2F01ABC'), session: signedIn, localeChosen: true), '/booking/01ABC');
     });
   });
 }

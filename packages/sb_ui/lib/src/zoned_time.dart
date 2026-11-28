@@ -9,6 +9,8 @@ abstract final class SbZonedTime {
   static void _init() {
     if (_ready) return;
     tzdata.initializeTimeZones();
+    // Latin digits in both languages, matching the server-formatted prices and slot times.
+    DateFormat.useNativeDigitsByDefaultFor('ar', false);
     _ready = true;
   }
 
