@@ -40,7 +40,7 @@ class Salon extends Model
     public const STATUS_CLOSED = 'closed';
 
     /** Sub-domains that can never be salon slugs. */
-    public const RESERVED_SLUGS = ['admin', 'www', 'api', 'app', 'mail', 'static', 'assets', 'cdn', 'help', 'status', 'docs', 'support', 'billing'];
+    public const RESERVED_SLUGS = ['admin', 'www', 'api', 'app', 'mail', 'static', 'assets', 'cdn', 'help', 'status', 'docs', 'support', 'billing', 'search', 'resolve'];
 
     /** @var list<string> */
     public array $translatable = ['name'];

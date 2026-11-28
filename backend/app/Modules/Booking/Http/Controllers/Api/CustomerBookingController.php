@@ -2,8 +2,6 @@
 
 namespace App\Modules\Booking\Http\Controllers\Api;
 
-use App\Core\Exceptions\AppException;
-use App\Core\Exceptions\ErrorCode;
 use App\Core\Http\ApiResponse;
 use App\Core\Identity\Models\CustomerAccount;
 use App\Core\Tenancy\Models\Branch;
@@ -15,8 +13,10 @@ use App\Modules\Booking\Actions\RescheduleBooking;
 use App\Modules\Booking\Enums\BookingSource;
 use App\Modules\Booking\Enums\BookingStatus;
 use App\Modules\Booking\Models\Booking;
+use App\Modules\Booking\Support\BookingCalendar;
 use App\Modules\Booking\Support\BookingInput;
 use App\Modules\Booking\Support\BookingPresenter;
+use App\Modules\Booking\Support\CustomerBookings;
 use App\Modules\Catalog\Pricing\PricingService;
 use App\Modules\Customer\Actions\FindOrCreateCustomer;
 use App\Modules\Customer\Models\Customer;
@@ -24,6 +24,7 @@ use App\Modules\Salon\Http\Controllers\Api\PublicSalonController;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 /**
  * The customer app's bookings, across salons. The salon is always taken from the branch (create,
@@ -101,28 +102,24 @@ final class CustomerBookingController
         return ApiResponse::success(BookingPresenter::forCustomer($cancel($model, $this->account($request), $reason), true));
     }
 
-    private function account(Request $request): CustomerAccount
+    /** The booking as an iCalendar file ("Add to calendar"). */
+    public function calendar(Request $request, string $booking): Response
     {
-        $account = $request->user('customer');
+        $model = $this->own($request, $booking);
 
-        return $account instanceof CustomerAccount ? $account : throw new AppException(ErrorCode::Unauthenticated);
+        return response(BookingCalendar::ics($model), 200, [
+            'Content-Type' => 'text/calendar; charset=utf-8',
+            'Content-Disposition' => 'attachment; filename="booking-'.$model->public_id.'.ics"',
+        ]);
     }
 
-    /**
-     * Finds the booking across salons, proves it belongs to this account, then sets the tenant
-     * to the booking's salon. Someone else's booking is "not found".
-     */
+    private function account(Request $request): CustomerAccount
+    {
+        return CustomerBookings::account($request);
+    }
+
     private function own(Request $request, string $publicId): Booking
     {
-        $account = $this->account($request);
-        $booking = Tenancy::bypass(fn () => Booking::query()->where('public_id', $publicId)
-            ->whereIn('customer_id', Customer::query()->where('customer_account_id', $account->id)->select('id'))
-            ->first());
-        if ($booking === null) {
-            throw new AppException(ErrorCode::NotFound);
-        }
-        Tenancy::set(Salon::query()->findOrFail($booking->salon_id));
-
-        return Booking::query()->findOrFail($booking->id);
+        return CustomerBookings::own($this->account($request), $publicId);
     }
 }

@@ -5,11 +5,13 @@ namespace App\Modules\Booking\Support;
 use App\Core\Authorization\Access;
 use App\Core\Identity\Models\User;
 use App\Core\Money\Money;
+use App\Core\Tenancy\Models\Salon;
 use App\Modules\Booking\Enums\BookingStatus;
 use App\Modules\Booking\Models\Booking;
 use App\Modules\Booking\Models\BookingItem;
 use App\Modules\Booking\Models\BookingStatusHistory;
 use App\Modules\Catalog\Models\Service;
+use App\Modules\Review\Models\BookingReview;
 use Illuminate\Support\Facades\Gate;
 
 /**
@@ -47,9 +49,23 @@ final class BookingPresenter
     {
         $b->loadMissing(['barber', 'items', 'branch']);
 
+        $branch = $b->branch;
+        $review = BookingReview::query()->where('booking_id', $b->id)->first();
+
         return self::base($b) + [
-            'branch_name' => $b->branch?->getTranslations('name'),
+            'branch_name' => $branch?->getTranslations('name'),
+            'branch' => $branch === null ? null : [
+                'id' => $branch->public_id,
+                'name' => $branch->getTranslations('name'),
+                'address' => $branch->getTranslations('address'),
+                'location' => $branch->lat === null ? null : ['lat' => (float) $branch->lat, 'lng' => (float) $branch->lng],
+                'phone' => $branch->phone,
+                'timezone' => $branch->timezone,
+            ],
+            'salon' => self::salon($b->salon_id),
             'can_change' => $b->status->isReschedulable(),
+            'review' => $review === null ? null : ['rating' => $review->rating, 'comment' => $review->comment],
+            'can_review' => $review === null && $b->status === BookingStatus::Completed,
             'history' => $withHistory ? self::history($b) : null,
         ];
     }
@@ -120,6 +136,16 @@ final class BookingPresenter
 
     /** @var array<int, string> */
     private static array $servicePublicIds = [];
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    private static function salon(int $salonId): ?array
+    {
+        $salon = Salon::query()->find($salonId);
+
+        return $salon === null ? null : ['id' => $salon->public_id, 'slug' => $salon->slug, 'name' => $salon->getTranslations('name')];
+    }
 
     private static function servicePublicId(int $id): ?string
     {

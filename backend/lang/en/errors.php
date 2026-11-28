@@ -50,4 +50,7 @@ return [
     'BOOKING_INVALID_TRANSITION' => 'This booking can’t be changed that way in its current status.',
     'BOOKING_CANCEL_WINDOW_PASSED' => 'It’s too late to change this booking online. Please call the salon.',
     'BOOKING_NOT_STARTED' => 'The appointment hasn’t started yet.',
+    'REVIEW_NOT_ALLOWED' => 'You can rate a visit once it is completed.',
+    'REVIEW_ALREADY_SUBMITTED' => 'You have already rated this visit.',
+    'INVALID_SALON_CODE' => 'We couldn’t find a salon for this code.',
 ];

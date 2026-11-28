@@ -57,6 +57,9 @@ enum ErrorCode: string
     case BookingInvalidTransition = 'BOOKING_INVALID_TRANSITION';
     case BookingCancelWindowPassed = 'BOOKING_CANCEL_WINDOW_PASSED';
     case BookingNotStarted = 'BOOKING_NOT_STARTED';
+    case ReviewNotAllowed = 'REVIEW_NOT_ALLOWED';
+    case ReviewAlreadySubmitted = 'REVIEW_ALREADY_SUBMITTED';
+    case InvalidSalonCode = 'INVALID_SALON_CODE';
 
     public function status(): int
     {
@@ -67,15 +70,15 @@ enum ErrorCode: string
             self::AlreadyMember, self::ScheduleRangesOverlap, self::TimeOffNotPending, self::TimeOffOverlaps,
             self::ServiceUnavailableAtBranch, self::BarberNotEligible, self::CatalogSelectionInvalid, self::CategoryNotEmpty,
             self::BookingOutsideHours, self::BookingLeadTime, self::BookingTooFarAhead, self::BookingInPast,
-            self::BookingCancelWindowPassed, self::BookingNotStarted => 422,
-            self::BookingSlotTaken, self::BookingInvalidTransition => 409,
+            self::BookingCancelWindowPassed, self::BookingNotStarted, self::ReviewNotAllowed => 422,
+            self::BookingSlotTaken, self::BookingInvalidTransition, self::ReviewAlreadySubmitted => 409,
             self::InvitationInvalid => 410,
             self::RoleNotAssignable => 403,
             self::Unauthenticated, self::RefreshTokenInvalid, self::RefreshTokenReused,
             self::ChallengeExpired, self::MembershipInactive => 401,
             self::Forbidden, self::NoActiveMembership, self::SalonSuspended, self::FeatureNotAvailable,
             self::TwoFactorEnrollmentRequired => 403,
-            self::NotFound => 404,
+            self::NotFound, self::InvalidSalonCode => 404,
             self::MethodNotAllowed => 405,
             self::IdempotencyInProgress, self::SalonSelectionRequired, self::TwoFactorRequired => 409,
             self::IdempotencyKeyRequired => 428,

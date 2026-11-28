@@ -27,6 +27,9 @@ interface Profile {
     no_show_fee: string;
     logo_url: string | null;
     cover_url: string | null;
+    listing_enabled: boolean;
+    app_code: string;
+    app_link: string;
 }
 
 const props = defineProps<{ profile: Profile; timezones: string[]; canUpdate: boolean }>();
@@ -52,6 +55,7 @@ const form = useForm({
     max_days_ahead: String(props.profile.max_days_ahead),
     cancellation_window_minutes: String(props.profile.cancellation_window_minutes),
     no_show_fee: props.profile.no_show_fee,
+    listing_enabled: props.profile.listing_enabled,
 });
 
 const save = (): void => {
@@ -151,6 +155,16 @@ const section = 'rounded-card border border-border bg-surface p-6 shadow-sm';
                         <SbInput v-model="form.cancellation_window_minutes" type="number" inputmode="numeric" :label="t('ui.settings.cancellation_window')" :hint="t('ui.settings.minutes')" :error="err('cancellation_window_minutes')" ltr />
                         <SbInput v-model="form.no_show_fee" inputmode="decimal" :label="t('ui.settings.no_show_fee', { currency: profile.currency })" :hint="t('ui.settings.no_show_fee_hint')" :error="err('no_show_fee')" ltr />
                     </div>
+                </section>
+
+                <section :class="section">
+                    <h3 class="text-h4">{{ t('ui.settings.app_title') }}</h3>
+                    <p class="mt-1 text-label text-text-secondary">{{ t('ui.settings.app_hint') }}</p>
+                    <div class="mt-5 grid gap-5 sm:grid-cols-2">
+                        <SbInput :model-value="profile.app_code" :label="t('ui.settings.app_code')" readonly ltr />
+                        <SbInput :model-value="profile.app_link" :label="t('ui.settings.app_link')" :hint="t('ui.settings.app_link_hint')" readonly ltr />
+                    </div>
+                    <div class="mt-3"><SbCheckbox v-model="form.listing_enabled" :label="t('ui.settings.listing_enabled')" :description="t('ui.settings.listing_enabled_hint')" /></div>
                 </section>
 
                 <section :class="section">

@@ -4,9 +4,11 @@ namespace App\Modules\Salon\Http\Controllers\Web;
 
 use App\Core\Authorization\Access;
 use App\Core\Identity\Models\User;
+use App\Core\Settings\Settings;
 use App\Core\Tenancy\Tenancy;
 use App\Modules\Salon\Actions\UpdateSalonProfile;
 use App\Modules\Salon\Actions\UploadSalonImage;
+use App\Modules\Salon\Http\Controllers\Api\SalonDirectoryController;
 use App\Modules\Salon\Support\MediaUrl;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -42,6 +44,9 @@ final class SalonSettingsController
                 'no_show_fee' => $salon->no_show_fee_amount->toDecimal(),
                 'logo_url' => MediaUrl::for($salon->logo_media_id),
                 'cover_url' => MediaUrl::for($salon->cover_media_id),
+                'listing_enabled' => (bool) Settings::get($salon, SalonDirectoryController::LISTING_KEY, false),
+                'app_code' => $salon->slug,
+                'app_link' => 'smartbarber://salon/'.$salon->slug,
             ],
             'timezones' => ['Asia/Qatar', 'Asia/Riyadh', 'Asia/Dubai', 'Asia/Kuwait', 'Asia/Bahrain', 'Asia/Muscat'],
             'canUpdate' => Access::scope($user, 'salon.settings.update') !== null,
@@ -71,9 +76,15 @@ final class SalonSettingsController
             'max_days_ahead' => ['required', 'integer', 'min:1', 'max:365'],
             'cancellation_window_minutes' => ['required', 'integer', 'min:0', 'max:10080'],
             'no_show_fee' => ['required', 'numeric', 'min:0', 'max:100000', 'decimal:0,3'],
+            'listing_enabled' => ['sometimes', 'boolean'],
         ]);
+        $salon = Tenancy::current() ?? abort(404);
+        if (array_key_exists('listing_enabled', $data)) {
+            Settings::set($salon, SalonDirectoryController::LISTING_KEY, (bool) $data['listing_enabled']);
+            unset($data['listing_enabled']);
+        }
 
-        $update(Tenancy::current() ?? abort(404), $data);
+        $update($salon, $data);
 
         return back()->with('success', __('ui.settings.saved'));
     }

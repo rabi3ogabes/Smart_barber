@@ -15,6 +15,7 @@ Route::prefix('customer')->name('api.customer.')->middleware(['auth:customer', '
     Route::get('bookings', [CustomerBookingController::class, 'index'])->name('bookings.index');
     Route::post('bookings', [CustomerBookingController::class, 'store'])->middleware('idempotent')->name('bookings.store');
     Route::get('bookings/{booking}', [CustomerBookingController::class, 'show'])->name('bookings.show');
+    Route::get('bookings/{booking}/calendar.ics', [CustomerBookingController::class, 'calendar'])->name('bookings.calendar');
     Route::post('bookings/{booking}/reschedule', [CustomerBookingController::class, 'reschedule'])->middleware('idempotent')->name('bookings.reschedule');
     Route::post('bookings/{booking}/cancel', [CustomerBookingController::class, 'cancel'])->middleware('idempotent:optional')->name('bookings.cancel');
 });

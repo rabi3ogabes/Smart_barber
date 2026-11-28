@@ -9,4 +9,9 @@ return [
     'device_registered' => 'تم تسجيل الجهاز.',
     'device_removed' => 'تمت إزالة الجهاز.',
     'otp_sms' => 'رمز سمارت باربر الخاص بك هو :code. تنتهي صلاحيته خلال :minutes دقائق.',
+    'review_saved' => 'شكرًا لتقييم زيارتك.',
+    'avatar_updated' => 'تم تحديث الصورة.',
+    'preferences_saved' => 'تم حفظ إعدادات الإشعارات.',
+    'deletion_requested' => 'يجري حذف حسابك. تم تسجيل خروجك.',
+    'deleted_customer' => 'عميل محذوف',
 ];

@@ -50,4 +50,7 @@ return [
     'BOOKING_INVALID_TRANSITION' => 'لا يمكن تغيير الحجز بهذه الطريقة في حالته الحالية.',
     'BOOKING_CANCEL_WINDOW_PASSED' => 'فات وقت تعديل هذا الحجز عبر التطبيق. يرجى الاتصال بالصالون.',
     'BOOKING_NOT_STARTED' => 'لم يبدأ الموعد بعد.',
+    'REVIEW_NOT_ALLOWED' => 'يمكنك تقييم الزيارة بعد اكتمالها.',
+    'REVIEW_ALREADY_SUBMITTED' => 'لقد قيّمت هذه الزيارة من قبل.',
+    'INVALID_SALON_CODE' => 'لم نجد صالونًا بهذا الرمز.',
 ];

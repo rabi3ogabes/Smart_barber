@@ -14,7 +14,7 @@ use App\Core\Tenancy\Models\Salon;
 final class Menu
 {
     /** Phases already delivered; an item is clickable when its phase is in this list. */
-    private const SHIPPED_PHASES = [1, 2, 3, 4];
+    private const SHIPPED_PHASES = [1, 2, 3, 4, 5];
 
     /**
      * @return list<array{key: string, label: string, icon: string, items: list<array<string, mixed>>}>
@@ -35,6 +35,7 @@ final class Menu
             ]],
             ['key' => 'customers', 'label' => 'nav.group.customers', 'icon' => 'contact', 'items' => [
                 ['key' => 'customers', 'label' => 'nav.customers', 'icon' => 'contact', 'href' => '/customers', 'permission' => 'customer.view', 'phase' => 4],
+                ['key' => 'reviews', 'label' => 'nav.reviews', 'icon' => 'star', 'href' => '/reviews', 'permission' => 'review.moderate', 'phase' => 5],
                 ['key' => 'loyalty', 'label' => 'nav.loyalty', 'icon' => 'gift', 'href' => '/loyalty', 'permission' => 'loyalty.view', 'feature' => Feature::LOYALTY, 'phase' => 7],
                 ['key' => 'memberships', 'label' => 'nav.memberships', 'icon' => 'badge-check', 'href' => '/memberships', 'permission' => 'membership.view', 'feature' => Feature::MEMBERSHIP, 'phase' => 7],
                 ['key' => 'marketing', 'label' => 'nav.marketing', 'icon' => 'megaphone', 'href' => '/marketing', 'permission' => 'campaign.view', 'feature' => Feature::MARKETING, 'phase' => 11],

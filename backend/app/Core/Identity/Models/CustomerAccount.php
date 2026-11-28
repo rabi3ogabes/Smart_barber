@@ -21,6 +21,10 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string|null $email
  * @property string $locale
  * @property Carbon|null $phone_verified_at
+ * @property int|null $avatar_media_id
+ * @property array<string, bool>|null $notification_preferences
+ * @property Carbon|null $deletion_requested_at
+ * @property Carbon|null $anonymised_at
  */
 class CustomerAccount extends Authenticatable
 {
@@ -31,13 +35,27 @@ class CustomerAccount extends Authenticatable
 
     protected $hidden = ['remember_token'];
 
+    /** What the app may send; offers are opt-in. Unknown keys are ignored. */
+    public const NOTIFICATION_DEFAULTS = ['booking_updates' => true, 'reminders' => true, 'offers' => false];
+
     protected function casts(): array
     {
         return [
             'phone_verified_at' => 'datetime',
             'deletion_requested_at' => 'datetime',
             'anonymised_at' => 'datetime',
+            'notification_preferences' => 'array',
         ];
+    }
+
+    /**
+     * @return array<string, bool>
+     */
+    public function notificationPreferences(): array
+    {
+        $saved = $this->notification_preferences ?? [];
+
+        return array_map(fn (string $key) => (bool) ($saved[$key] ?? self::NOTIFICATION_DEFAULTS[$key]), array_combine(array_keys(self::NOTIFICATION_DEFAULTS), array_keys(self::NOTIFICATION_DEFAULTS)));
     }
 
     public function getAuthPassword(): string

@@ -2,6 +2,7 @@
 
 namespace App\Core\Identity\Http\Resources;
 
+use App\Core\Identity\Actions\UploadAvatar;
 use App\Core\Identity\Models\CustomerAccount;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -23,6 +24,7 @@ final class CustomerAccountResource extends JsonResource
             'email' => $this->email,
             'locale' => $this->locale,
             'profile_complete' => $this->name !== null && $this->name !== '',
+            'avatar_url' => UploadAvatar::url($this->avatar_media_id),
         ];
     }
 }

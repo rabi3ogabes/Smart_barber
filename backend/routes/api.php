@@ -27,6 +27,10 @@ Route::prefix('customer')->name('api.customer.')->group(function (): void {
         Route::post('auth/logout', [CustomerAuthController::class, 'logout'])->name('auth.logout');
         Route::get('me', [CustomerProfileController::class, 'show'])->name('me');
         Route::patch('me', [CustomerProfileController::class, 'update'])->name('me.update');
+        Route::post('me/avatar', [CustomerProfileController::class, 'avatar'])->name('me.avatar');
+        Route::get('me/notification-preferences', [CustomerProfileController::class, 'notificationPreferences'])->name('me.notifications');
+        Route::put('me/notification-preferences', [CustomerProfileController::class, 'updateNotificationPreferences'])->name('me.notifications.update');
+        Route::post('me/deletion-request', [CustomerProfileController::class, 'requestDeletion'])->middleware('idempotent:optional')->name('me.deletion');
     });
 });
 
@@ -60,3 +64,4 @@ require base_path('app/Modules/Staff/routes/api.php');
 require base_path('app/Modules/Catalog/routes/api.php');
 require base_path('app/Modules/Customer/routes/api.php');
 require base_path('app/Modules/Booking/routes/api.php');
+require base_path('app/Modules/Review/routes/api.php');

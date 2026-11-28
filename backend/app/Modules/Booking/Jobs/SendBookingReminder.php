@@ -33,6 +33,11 @@ final class SendBookingReminder implements ShouldQueue
             return;
         }
 
+        $account = $booking->customer->account;
+        if ($account !== null && ! $account->notificationPreferences()['reminders']) {
+            return; // the customer turned reminders off in the app
+        }
+
         $channel->notify($booking->customer, "booking.reminder_{$this->kind}", [
             'booking' => $booking->public_id,
             'starts_at' => $this->expectedStartsAt,
