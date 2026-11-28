@@ -205,8 +205,12 @@ it('enforces the status machine', function () {
 
 it('enforces the cancellation window unless the policy is overridden', function () {
     $f = F::make($this);
-    Salon::query()->whereKey($f->salon->id)->update(['cancellation_window_minutes' => 180]);
+    Salon::query()->whereKey($f->salon->id)->update(['cancellation_window_minutes' => 600]);
+    // A start inside the 10 h window that never falls on the 13:00–13:30 break, whatever time the suite runs.
     $soon = CarbonImmutable::now('Asia/Qatar')->addHours(2)->startOfHour();
+    while (in_array($soon->hour, [12, 13], true)) {
+        $soon = $soon->addHours(2);
+    }
     $f->run(fn () => BarberScheduleOverride::query()->create(['barber_id' => $f->barberA->id, 'branch_id' => $f->branch->id, 'date' => $soon->toDateString(), 'type' => 'custom_hours', 'starts_at' => '00:00', 'ends_at' => '23:59']));
     BranchOpeningHour::query()->withoutGlobalScopes()->where('branch_id', $f->branch->id)->update(['opens_at' => '00:00', 'closes_at' => '23:59']);
     $near = book($f, $soon->utc());

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Modules\Review\Http\Controllers\Web;
+namespace App\Modules\Booking\Http\Controllers\Web;
 
 use App\Core\Authorization\Access;
 use App\Core\Identity\Models\User;
 use App\Core\Tenancy\Tenancy;
-use App\Modules\Review\Actions\ModerateReview;
-use App\Modules\Review\Models\BookingReview;
+use App\Modules\Booking\Actions\ModerateReview;
+use App\Modules\Booking\Models\BookingReview;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;

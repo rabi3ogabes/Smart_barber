@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Customer\Http\Controllers\Api;
+namespace App\Modules\Booking\Http\Controllers\Api;
 
 use App\Core\Features\Feature;
 use App\Core\Http\ApiResponse;
@@ -10,6 +10,7 @@ use App\Core\Tenancy\Tenancy;
 use App\Modules\Booking\Enums\BookingStatus;
 use App\Modules\Booking\Models\Booking;
 use App\Modules\Booking\Models\BookingItem;
+use App\Modules\Booking\Models\BookingReview;
 use App\Modules\Booking\Support\BookingPresenter;
 use App\Modules\Booking\Support\CustomerBookings;
 use App\Modules\Catalog\Models\Service;
@@ -17,7 +18,6 @@ use App\Modules\Catalog\Models\ServiceAddon;
 use App\Modules\Catalog\Models\ServiceBundle;
 use App\Modules\Catalog\Pricing\PricingService;
 use App\Modules\Customer\Models\Customer;
-use App\Modules\Review\Models\BookingReview;
 use App\Modules\Salon\Http\Controllers\Api\PublicSalonController;
 use App\Modules\Salon\Support\MediaUrl;
 use App\Modules\Salon\Support\SalonSummary;

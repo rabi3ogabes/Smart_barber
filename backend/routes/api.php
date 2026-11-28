@@ -64,4 +64,3 @@ require base_path('app/Modules/Staff/routes/api.php');
 require base_path('app/Modules/Catalog/routes/api.php');
 require base_path('app/Modules/Customer/routes/api.php');
 require base_path('app/Modules/Booking/routes/api.php');
-require base_path('app/Modules/Review/routes/api.php');

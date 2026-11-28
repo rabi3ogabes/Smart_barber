@@ -2,6 +2,7 @@
 
 use App\Modules\Booking\Http\Controllers\Web\BookingController;
 use App\Modules\Booking\Http\Controllers\Web\CalendarController;
+use App\Modules\Booking\Http\Controllers\Web\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,3 +20,7 @@ Route::get('bookings/{booking}', [BookingController::class, 'show'])->name('book
 Route::put('bookings/{booking}/reschedule', [BookingController::class, 'reschedule'])->name('bookings.reschedule');
 Route::put('bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
 Route::put('bookings/{booking}/{action}', [BookingController::class, 'transition'])->whereIn('action', ['confirm', 'arrive', 'start', 'complete', 'no-show'])->name('bookings.transition');
+
+// Review moderation (spec-review item 6).
+Route::get('reviews', [ReviewController::class, 'index'])->middleware('can:review.moderate')->name('reviews.index');
+Route::put('reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');

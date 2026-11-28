@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Modules\Review\Models;
+namespace App\Modules\Booking\Models;
 
 use App\Core\Identity\Models\User;
 use App\Core\Support\HasPublicId;
 use App\Core\Tenancy\BelongsToSalon;
 use App\Core\Tenancy\Models\Branch;
-use App\Modules\Booking\Models\Booking;
 use App\Modules\Customer\Models\Customer;
 use App\Modules\Staff\Models\Barber;
 use Illuminate\Database\Eloquent\Model;

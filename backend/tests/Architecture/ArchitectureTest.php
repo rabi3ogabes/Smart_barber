@@ -1,6 +1,7 @@
 <?php
 
 use App\Core\Audit\AuditLog;
+use App\Core\Identity\Models\AccountMedia;
 use App\Core\Identity\Models\CustomerAccount;
 use App\Core\Identity\Models\Device;
 use App\Core\Identity\Models\OtpCode;
@@ -26,6 +27,7 @@ const NON_TENANT_MODELS = [
     PersonalAccessToken::class => 'identity-level; salon_id nullable',
     Device::class => 'owned by an identity; salon_id nullable',
     AuditLog::class => 'salon_id nullable for platform events',
+    AccountMedia::class => 'owned by a global customer account (avatar), ADR-009',
 ];
 
 /**

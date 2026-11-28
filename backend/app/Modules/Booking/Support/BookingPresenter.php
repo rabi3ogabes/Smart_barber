@@ -9,9 +9,9 @@ use App\Core\Tenancy\Models\Salon;
 use App\Modules\Booking\Enums\BookingStatus;
 use App\Modules\Booking\Models\Booking;
 use App\Modules\Booking\Models\BookingItem;
+use App\Modules\Booking\Models\BookingReview;
 use App\Modules\Booking\Models\BookingStatusHistory;
 use App\Modules\Catalog\Models\Service;
-use App\Modules\Review\Models\BookingReview;
 use Illuminate\Support\Facades\Gate;
 
 /**

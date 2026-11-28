@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Modules\Review\Support;
+namespace App\Modules\Booking\Support;
 
-use App\Modules\Review\Models\BookingReview;
+use App\Modules\Booking\Models\BookingReview;
 use App\Modules\Staff\Models\Barber;
 
 /**

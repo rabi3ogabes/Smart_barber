@@ -1,6 +1,8 @@
 <?php
 
 use App\Modules\Booking\Http\Controllers\Api\CustomerBookingController;
+use App\Modules\Booking\Http\Controllers\Api\CustomerHomeController;
+use App\Modules\Booking\Http\Controllers\Api\CustomerReviewController;
 use App\Modules\Booking\Http\Controllers\Api\PublicSlotsController;
 use App\Modules\Booking\Http\Controllers\Api\StaffBookingController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +20,10 @@ Route::prefix('customer')->name('api.customer.')->middleware(['auth:customer', '
     Route::get('bookings/{booking}/calendar.ics', [CustomerBookingController::class, 'calendar'])->name('bookings.calendar');
     Route::post('bookings/{booking}/reschedule', [CustomerBookingController::class, 'reschedule'])->middleware('idempotent')->name('bookings.reschedule');
     Route::post('bookings/{booking}/cancel', [CustomerBookingController::class, 'cancel'])->middleware('idempotent:optional')->name('bookings.cancel');
+    // Phase 5: "Rate your visit" (the unique booking index already makes a repeat harmless) and the app home.
+    Route::post('bookings/{booking}/review', [CustomerReviewController::class, 'store'])->middleware('idempotent:optional')->name('bookings.review');
+    Route::get('salons', [CustomerHomeController::class, 'salons'])->name('salons');
+    Route::get('home', [CustomerHomeController::class, 'home'])->name('home');
 });
 
 Route::prefix('staff')->name('api.staff.')->middleware(['auth:staff', 'tenant.token', 'throttle:api'])->group(function (): void {

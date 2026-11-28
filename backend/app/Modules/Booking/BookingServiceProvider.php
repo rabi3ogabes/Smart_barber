@@ -2,9 +2,14 @@
 
 namespace App\Modules\Booking;
 
+use App\Modules\Booking\Listeners\ClearAnonymisedCustomerBookings;
 use App\Modules\Booking\Models\Booking;
+use App\Modules\Booking\Models\BookingReview;
 use App\Modules\Booking\Policies\BookingPolicy;
+use App\Modules\Booking\Policies\BookingReviewPolicy;
+use App\Modules\Customer\Events\CustomerAnonymising;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -17,6 +22,8 @@ final class BookingServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::policy(Booking::class, BookingPolicy::class);
-        Relation::morphMap(['booking' => Booking::class]);
+        Gate::policy(BookingReview::class, BookingReviewPolicy::class);
+        Relation::morphMap(['booking' => Booking::class, 'booking_review' => BookingReview::class]);
+        Event::listen(CustomerAnonymising::class, ClearAnonymisedCustomerBookings::class);
     }
 }

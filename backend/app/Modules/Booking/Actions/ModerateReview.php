@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Modules\Review\Actions;
+namespace App\Modules\Booking\Actions;
 
 use App\Core\Audit\AuditLogger;
 use App\Core\Identity\Models\User;
-use App\Modules\Review\Models\BookingReview;
-use App\Modules\Review\Support\BarberRating;
+use App\Modules\Booking\Models\BookingReview;
+use App\Modules\Booking\Support\BarberRating;
 use Illuminate\Support\Facades\DB;
 
 /**

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Modules\Review\Http\Controllers\Api;
+namespace App\Modules\Booking\Http\Controllers\Api;
 
 use App\Core\Http\ApiResponse;
+use App\Modules\Booking\Actions\SubmitReview;
 use App\Modules\Booking\Support\CustomerBookings;
-use App\Modules\Review\Actions\SubmitReview;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

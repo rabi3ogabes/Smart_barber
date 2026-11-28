@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Modules\Review\Actions;
+namespace App\Modules\Booking\Actions;
 
 use App\Core\Exceptions\AppException;
 use App\Core\Exceptions\ErrorCode;
 use App\Modules\Booking\Enums\BookingStatus;
 use App\Modules\Booking\Models\Booking;
-use App\Modules\Review\Models\BookingReview;
-use App\Modules\Review\Support\BarberRating;
+use App\Modules\Booking\Models\BookingReview;
+use App\Modules\Booking\Support\BarberRating;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 

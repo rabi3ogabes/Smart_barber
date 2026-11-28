@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Modules\Review\Policies;
+namespace App\Modules\Booking\Policies;
 
 use App\Core\Authorization\Access;
 use App\Core\Authorization\PermissionCatalog as P;
 use App\Core\Identity\Models\User;
-use App\Modules\Review\Models\BookingReview;
+use App\Modules\Booking\Models\BookingReview;
 use Illuminate\Auth\Access\Response;
 
 /**
