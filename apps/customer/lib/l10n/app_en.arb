@@ -74,5 +74,236 @@
         "type": "String"
       }
     }
-  }
+  },
+  "accountDeleted": "Your account was deleted. Your salons keep only anonymous records.",
+  "addToCalendar": "Add to calendar",
+  "anyBarber": "Any available barber",
+  "anyBarberHint": "We’ll seat you with the first free barber.",
+  "bookAgain": "Book again: {services}",
+  "@bookAgain": {
+    "placeholders": {
+      "services": {
+        "type": "String"
+      }
+    }
+  },
+  "bookAnother": "Book another",
+  "bookNow": "Book now",
+  "bookingCancelled": "Booking cancelled.",
+  "bookingConfirmedTitle": "You’re booked",
+  "bookingDetailTitle": "Appointment",
+  "bookingPendingBody": "The salon will confirm shortly. We’ll let you know.",
+  "bookingPendingTitle": "Request sent",
+  "branchPickerTitle": "Choose a branch",
+  "bundlesTitle": "Packages",
+  "callSalon": "Call",
+  "cameraPermissionBody": "Allow camera access in Settings, or type the salon code instead.",
+  "cameraPermissionTitle": "Camera access is off",
+  "cameraUnavailable": "The camera isn’t available",
+  "cancelBooking": "Cancel booking",
+  "cancelBookingBody": "This frees the time for someone else.",
+  "cancelBookingTitle": "Cancel this appointment?",
+  "cancelPolicy": "Free changes until {day}, {time}. After that, please call the salon.",
+  "@cancelPolicy": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "cancelPolicyAnytime": "You can change or cancel up to the start time.",
+  "cannotRescheduleBody": "This appointment can no longer be changed in the app. Please call the salon.",
+  "cannotRescheduleTitle": "Can’t change this appointment",
+  "changePhoto": "Change photo",
+  "closedToday": "Closed today",
+  "confirm": "Confirm",
+  "confirmBooking": "Confirm booking",
+  "confirmNewTime": "Confirm new time",
+  "currentSalon": "Your salon",
+  "deleteAccount": "Delete my account",
+  "deleteAccountBody": "You’ll be signed out on every device. Your name and number are removed from every salon you visited; receipts stay as anonymous records. This can’t be undone.",
+  "deleteAccountConfirm": "Delete",
+  "deleteAccountHint": "Removes your profile, photo and visit notes.",
+  "deleteAccountTitle": "Delete your account?",
+  "directions": "Directions",
+  "discount": "Discount",
+  "durationHours": "{hours} h",
+  "@durationHours": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "durationHoursMinutes": "{hours} h {minutes} min",
+  "@durationHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "durationMinutes": "{minutes} min",
+  "@durationMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "editName": "Edit name",
+  "keepBooking": "Keep it",
+  "loyaltySoonBody": "Earn rewards on every visit. Coming to this salon soon.",
+  "loyaltySoonTitle": "Rewards",
+  "nameLabel": "Your name",
+  "nextAppointment": "Next appointment",
+  "noBranchesBody": "This salon has no open branch right now.",
+  "noBranchesTitle": "No branch available",
+  "noNextAppointment": "You have no upcoming appointment.",
+  "noPastBody": "Completed and cancelled visits appear here.",
+  "noPastTitle": "No past visits",
+  "noServicesBody": "This branch has no services you can book online yet.",
+  "noServicesTitle": "No services online",
+  "noSlotsBody": "Try another day or another barber.",
+  "noSlotsTitle": "No free times this day",
+  "noUpcomingBody": "Book your next visit in a few taps.",
+  "noUpcomingTitle": "No upcoming visits",
+  "notesHint": "Anything the barber should know",
+  "notesLabel": "Note (optional)",
+  "notificationSettings": "Notifications",
+  "notifyBookingUpdates": "Booking updates",
+  "notifyBookingUpdatesHint": "Confirmations, changes and cancellations.",
+  "notifyOffers": "Offers",
+  "notifyOffersHint": "Promotions from salons you visit.",
+  "notifyReminders": "Reminders",
+  "notifyRemindersHint": "A day before and two hours before your appointment.",
+  "notifySystemHint": "You can also turn notifications off in your phone’s settings.",
+  "openToday": "Open today {hours}",
+  "@openToday": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "past": "Past",
+  "payAtSalon": "You pay at the salon.",
+  "photoUpdated": "Photo updated.",
+  "popularServices": "Popular services",
+  "rateLastVisit": "How was your last visit?",
+  "rateLastVisitWith": "How was your visit with {barber}?",
+  "@rateLastVisitWith": {
+    "placeholders": {
+      "barber": {
+        "type": "String"
+      }
+    }
+  },
+  "rateVisit": "Rate your visit",
+  "rateVisitBody": "Your rating helps the salon and other customers.",
+  "rateVisitTitle": "Rate your visit",
+  "ratingCommentHint": "What did you like? What could be better?",
+  "ratingCommentLabel": "Comment (optional)",
+  "ratingRequired": "Choose 1 to 5 stars.",
+  "ratingSubmit": "Send rating",
+  "ratingThanks": "Thanks for your rating.",
+  "reschedule": "Reschedule",
+  "rescheduleCurrent": "Currently {day} at {time}",
+  "@rescheduleCurrent": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "rescheduled": "Appointment moved.",
+  "salonBranches": "{count, plural, =1{1 branch} other{{count} branches}}",
+  "@salonBranches": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "salonChooseAnother": "Choose another salon",
+  "salonCodeHint": "e.g. elite-barbers",
+  "salonCodeLabel": "Salon code or link",
+  "salonCodeNotFound": "We couldn’t find this salon.",
+  "salonCodeRequired": "Enter the salon code or link.",
+  "salonEntrySubtitle": "Scan the QR code at the salon, use its link, or enter its code.",
+  "salonEntryTitle": "Find your salon",
+  "salonLinkNotFoundBody": "The link may be old or the salon may be closed.",
+  "salonOpen": "Open salon",
+  "salonScanHint": "Point the camera at the salon’s QR code.",
+  "salonScanQr": "Scan QR code",
+  "salonSearchEmpty": "No salons found",
+  "salonSearchEmptyBody": "Only salons that chose to appear in search are listed. Ask your salon for its QR code.",
+  "salonSearchHelper": "At least 2 letters",
+  "salonSearchLabel": "Salon name",
+  "salonSearchTitle": "Search",
+  "salonYours": "Your salons",
+  "salonYoursEmpty": "Salons you book with will appear here.",
+  "save": "Save",
+  "servicesTitle": "Services",
+  "slotTakenAlternatives": "Next free times",
+  "slotTakenMessage": "Someone just booked that time. Please pick another one.",
+  "specialtyBeard": "Beard",
+  "specialtyClassicCut": "Classic cut",
+  "specialtyColoring": "Colouring",
+  "specialtyFacial": "Facial",
+  "specialtyFade": "Fade",
+  "specialtyKids": "Kids",
+  "specialtyLongHair": "Long hair",
+  "specialtyShave": "Shave",
+  "specialtyStyling": "Styling",
+  "starsLabel": "{count, plural, =1{1 star} other{{count} stars}}",
+  "@starsLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statusArrived": "Arrived",
+  "statusCancelled": "Cancelled",
+  "statusCompleted": "Completed",
+  "statusConfirmed": "Confirmed",
+  "statusInService": "In the chair",
+  "statusNoShow": "Missed",
+  "statusPending": "Awaiting confirmation",
+  "statusUnknown": "Updated",
+  "stepBarber": "Choose your barber",
+  "stepOf": "{current} of {total}",
+  "@stepOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stepServices": "Choose services",
+  "stepSummary": "Review and confirm",
+  "stepTime": "Pick a time",
+  "switchSalon": "Change salon",
+  "tax": "VAT",
+  "timelineRescheduled": "Rescheduled",
+  "timelineTitle": "History",
+  "today": "Today",
+  "total": "Total",
+  "upcoming": "Upcoming",
+  "viewBooking": "View appointment",
+  "yourRating": "Your rating",
+  "cannotOpenLink": "We couldn’t open this on your phone."
 }

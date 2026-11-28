@@ -13,6 +13,7 @@ abstract class CustomerAccount with _$CustomerAccount {
     required bool profileComplete,
     String? name,
     String? email,
+    String? avatarUrl,
   }) = _CustomerAccount;
 
   factory fromJson(Map<String, Object?> json) => _$CustomerAccountFromJson(json);

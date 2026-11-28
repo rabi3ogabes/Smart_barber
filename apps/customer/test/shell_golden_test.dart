@@ -21,7 +21,7 @@ void main() {
 
         final overrides = [...await baseOverrides(), customerSessionProvider.overrideWith(SignedInSession.new)];
         final router = GoRouter(
-          routes: [GoRoute(path: '/', builder: (_, _) => CustomerShell(currentIndex: 0, onSelect: (_) {}, child: const HomeTab()))],
+          routes: [GoRoute(path: '/', builder: (_, _) => CustomerShell(currentIndex: 0, onSelect: (_) {}, child: const AiStudioTab()))],
         );
 
         await tester.pumpWidget(testApp(overrides: overrides, router: router, locale: locale, brightness: brightness));

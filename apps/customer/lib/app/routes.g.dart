@@ -10,7 +10,9 @@ List<RouteBase> get $appRoutes => [
   $splashRoute,
   $languageRoute,
   $phoneRoute,
-  $bookingLinkRoute,
+  $salonEntryRoute,
+  $qrScanRoute,
+  $bookingDetailRoute,
   $customerShellRoute,
 ];
 
@@ -153,21 +155,137 @@ T? _$convertMapValue<T>(
   return value == null ? null : converter(value);
 }
 
-RouteBase get $bookingLinkRoute => GoRouteData.$route(
-  path: '/booking/:id',
+RouteBase get $salonEntryRoute => GoRouteData.$route(
+  path: '/salon',
   hasOverriddenOnExit: false,
-  factory: $BookingLinkRoute._fromState,
+  factory: $SalonEntryRoute._fromState,
+  routes: [
+    GoRouteData.$route(
+      path: ':code',
+      hasOverriddenOnExit: false,
+      factory: $SalonLinkRoute._fromState,
+    ),
+  ],
 );
 
-mixin $BookingLinkRoute on GoRouteData {
-  static BookingLinkRoute _fromState(GoRouterState state) =>
-      BookingLinkRoute(id: state.pathParameters['id']!);
+mixin $SalonEntryRoute on GoRouteData {
+  static SalonEntryRoute _fromState(GoRouterState state) =>
+      const SalonEntryRoute();
 
-  BookingLinkRoute get _self => this as BookingLinkRoute;
+  @override
+  String get location => GoRouteData.$location('/salon');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $SalonLinkRoute on GoRouteData {
+  static SalonLinkRoute _fromState(GoRouterState state) =>
+      SalonLinkRoute(code: state.pathParameters['code']!);
+
+  SalonLinkRoute get _self => this as SalonLinkRoute;
+
+  @override
+  String get location =>
+      GoRouteData.$location('/salon/${Uri.encodeComponent(_self.code)}');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $qrScanRoute => GoRouteData.$route(
+  path: '/scan-salon',
+  hasOverriddenOnExit: false,
+  factory: $QrScanRoute._fromState,
+);
+
+mixin $QrScanRoute on GoRouteData {
+  static QrScanRoute _fromState(GoRouterState state) => const QrScanRoute();
+
+  @override
+  String get location => GoRouteData.$location('/scan-salon');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $bookingDetailRoute => GoRouteData.$route(
+  path: '/booking/:id',
+  hasOverriddenOnExit: false,
+  factory: $BookingDetailRoute._fromState,
+  routes: [
+    GoRouteData.$route(
+      path: 'reschedule',
+      hasOverriddenOnExit: false,
+      factory: $RescheduleRoute._fromState,
+    ),
+  ],
+);
+
+mixin $BookingDetailRoute on GoRouteData {
+  static BookingDetailRoute _fromState(GoRouterState state) =>
+      BookingDetailRoute(id: state.pathParameters['id']!);
+
+  BookingDetailRoute get _self => this as BookingDetailRoute;
 
   @override
   String get location =>
       GoRouteData.$location('/booking/${Uri.encodeComponent(_self.id)}');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $RescheduleRoute on GoRouteData {
+  static RescheduleRoute _fromState(GoRouterState state) =>
+      RescheduleRoute(id: state.pathParameters['id']!);
+
+  RescheduleRoute get _self => this as RescheduleRoute;
+
+  @override
+  String get location => GoRouteData.$location(
+    '/booking/${Uri.encodeComponent(_self.id)}/reschedule',
+  );
 
   @override
   void go(BuildContext context) => context.go(location);
@@ -228,6 +346,13 @@ RouteBase get $customerShellRoute => StatefulShellRouteData.$route(
           path: '/profile',
           hasOverriddenOnExit: false,
           factory: $ProfileRoute._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: 'notifications',
+              hasOverriddenOnExit: false,
+              factory: $NotificationSettingsRoute._fromState,
+            ),
+          ],
         ),
       ],
     ),
@@ -325,6 +450,27 @@ mixin $ProfileRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/profile');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $NotificationSettingsRoute on GoRouteData {
+  static NotificationSettingsRoute _fromState(GoRouterState state) =>
+      const NotificationSettingsRoute();
+
+  @override
+  String get location => GoRouteData.$location('/profile/notifications');
 
   @override
   void go(BuildContext context) => context.go(location);

@@ -19,6 +19,7 @@ dependencies:
   material_ui: ^1.11.1
   sb_core:
     path: ../sb_core
+  timezone: ^0.11.2
 
 flutter:
   generate: true

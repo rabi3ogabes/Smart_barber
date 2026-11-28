@@ -63,6 +63,19 @@ class CustomerSession extends _$CustomerSession {
     state = const AsyncData(SignedOut());
   }
 
+  /// Replaces the cached profile after an edit (name, photo).
+  Future<void> updated(CustomerAccount account) async {
+    await _cache(account);
+    state = AsyncData(SignedIn(account));
+  }
+
+  /// After the server deleted the account: tokens are already revoked there, so only clear locally.
+  Future<void> accountDeleted() async {
+    await ref.read(tokenStoreProvider).clear();
+    await ref.read(preferencesProvider).remove(_cacheKey);
+    state = const AsyncData(SignedOut());
+  }
+
   /// Called by the auth interceptor when the refresh token is no longer valid.
   void expired() => state = const AsyncData(SignedOut(expired: true));
 

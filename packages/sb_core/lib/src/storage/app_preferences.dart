@@ -25,4 +25,6 @@ class AppPreferences {
   String? getString(String key) => _prefs.getString(key);
 
   Future<void> setString(String key, String value) => _prefs.setString(key, value);
+
+  Future<void> remove(String key) => _prefs.remove(key);
 }

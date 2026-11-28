@@ -14,6 +14,7 @@ _CustomerAccount _$CustomerAccountFromJson(Map<String, dynamic> json) =>
       profileComplete: json['profile_complete'] as bool,
       name: json['name'] as String?,
       email: json['email'] as String?,
+      avatarUrl: json['avatar_url'] as String?,
     );
 
 Map<String, dynamic> _$CustomerAccountToJson(_CustomerAccount instance) =>
@@ -24,6 +25,7 @@ Map<String, dynamic> _$CustomerAccountToJson(_CustomerAccount instance) =>
       'profile_complete': instance.profileComplete,
       'name': instance.name,
       'email': instance.email,
+      'avatar_url': instance.avatarUrl,
     };
 
 _OtpSent _$OtpSentFromJson(Map<String, dynamic> json) => _OtpSent(

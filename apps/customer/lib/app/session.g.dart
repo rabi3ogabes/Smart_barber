@@ -42,7 +42,7 @@ final class CustomerSessionProvider
   CustomerSession create() => CustomerSession();
 }
 
-String _$customerSessionHash() => r'0bd2f5b863db99a8cc8f0a832a89802747ad148d';
+String _$customerSessionHash() => r'34c8914c0767142ec0e28e27ee323e738d582f25';
 
 /// Restores the session at start-up and tracks sign-in / sign-out.
 ///

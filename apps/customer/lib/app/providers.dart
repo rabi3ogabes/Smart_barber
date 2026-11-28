@@ -39,6 +39,18 @@ CustomerAuthRepository customerAuthRepository(Ref ref) =>
     CustomerAuthRepository(api: ref.watch(apiDioProvider), bare: ref.watch(bareDioProvider));
 
 @Riverpod(keepAlive: true)
+SalonRepository salonRepository(Ref ref) => SalonRepository(ref.watch(apiDioProvider));
+
+@Riverpod(keepAlive: true)
+CatalogRepository catalogRepository(Ref ref) => CatalogRepository(ref.watch(apiDioProvider));
+
+@Riverpod(keepAlive: true)
+BookingRepository bookingRepository(Ref ref) => BookingRepository(ref.watch(apiDioProvider));
+
+@Riverpod(keepAlive: true)
+CustomerHomeRepository customerHomeRepository(Ref ref) => CustomerHomeRepository(ref.watch(apiDioProvider));
+
+@Riverpod(keepAlive: true)
 DevicesRepository devicesRepository(Ref ref) => DevicesRepository(ref.watch(apiDioProvider), isStaffApp: false);
 
 /// Current time, injectable so tests (and goldens) are deterministic.

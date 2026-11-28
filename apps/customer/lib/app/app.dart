@@ -6,6 +6,7 @@ import 'package:sb_ui/sb_ui.dart';
 import 'package:smartbarber_customer/app/preferences_controllers.dart';
 import 'package:smartbarber_customer/app/providers.dart';
 import 'package:smartbarber_customer/app/router.dart';
+import 'package:smartbarber_customer/features/push/push_registration.dart';
 import 'package:smartbarber_customer/l10n/generated/app_localizations.dart';
 
 const supportedLocales = [Locale('ar'), Locale('en')];
@@ -26,6 +27,7 @@ class CustomerApp extends ConsumerWidget {
     // Arabic until the user picks; Directionality follows the locale (no per-widget hacks).
     final locale = ref.watch(appLocaleProvider) ?? const Locale('ar');
     final online = ref.watch(onlineProvider).value ?? true;
+    ref.watch(pushRegistrationProvider); // registers the push token while signed in
 
     return MaterialApp.router(
       title: 'Smart Barber',

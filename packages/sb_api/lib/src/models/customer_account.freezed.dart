@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CustomerAccount {
 
- String get id; String get phone; String get locale; bool get profileComplete; String? get name; String? get email;
+ String get id; String get phone; String get locale; bool get profileComplete; String? get name; String? get email; String? get avatarUrl;
 /// Create a copy of CustomerAccount
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,20 +30,20 @@ $CustomerAccountCopyWith<CustomerAccount> get copyWith => _$CustomerAccountCopyW
 @override
 bool operator ==(Object other) {
   final _this = this as CustomerAccount;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CustomerAccount&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.phone, _this.phone) || other.phone == _this.phone)&&(identical(other.locale, _this.locale) || other.locale == _this.locale)&&(identical(other.profileComplete, _this.profileComplete) || other.profileComplete == _this.profileComplete)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.email, _this.email) || other.email == _this.email));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CustomerAccount&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.phone, _this.phone) || other.phone == _this.phone)&&(identical(other.locale, _this.locale) || other.locale == _this.locale)&&(identical(other.profileComplete, _this.profileComplete) || other.profileComplete == _this.profileComplete)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.email, _this.email) || other.email == _this.email)&&(identical(other.avatarUrl, _this.avatarUrl) || other.avatarUrl == _this.avatarUrl));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as CustomerAccount;
-  return Object.hash(runtimeType,_this.id,_this.phone,_this.locale,_this.profileComplete,_this.name,_this.email);
+  return Object.hash(runtimeType,_this.id,_this.phone,_this.locale,_this.profileComplete,_this.name,_this.email,_this.avatarUrl);
 }
 
 @override
 String toString() {
   final _this = this as CustomerAccount;
-  return 'CustomerAccount(id: ${_this.id}, phone: ${_this.phone}, locale: ${_this.locale}, profileComplete: ${_this.profileComplete}, name: ${_this.name}, email: ${_this.email})';
+  return 'CustomerAccount(id: ${_this.id}, phone: ${_this.phone}, locale: ${_this.locale}, profileComplete: ${_this.profileComplete}, name: ${_this.name}, email: ${_this.email}, avatarUrl: ${_this.avatarUrl})';
 }
 
 
@@ -54,7 +54,7 @@ abstract mixin class $CustomerAccountCopyWith<$Res>  {
   factory $CustomerAccountCopyWith(CustomerAccount value, $Res Function(CustomerAccount) _then) = _$CustomerAccountCopyWithImpl;
 @useResult
 $Res call({
- String id, String phone, String locale, bool profileComplete, String? name, String? email
+ String id, String phone, String locale, bool profileComplete, String? name, String? email, String? avatarUrl
 });
 
 
@@ -71,7 +71,7 @@ class _$CustomerAccountCopyWithImpl<$Res>
 
 /// Create a copy of CustomerAccount
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? phone = null,Object? locale = null,Object? profileComplete = null,Object? name = freezed,Object? email = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? phone = null,Object? locale = null,Object? profileComplete = null,Object? name = freezed,Object? email = freezed,Object? avatarUrl = freezed,}) {
   return _then(CustomerAccount(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
@@ -79,6 +79,7 @@ as String,locale: null == locale ? _self.locale : locale // ignore: cast_nullabl
 as String,profileComplete: null == profileComplete ? _self.profileComplete : profileComplete // ignore: cast_nullable_to_non_nullable
 as bool,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -164,10 +165,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String phone,  String locale,  bool profileComplete,  String? name,  String? email)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String phone,  String locale,  bool profileComplete,  String? name,  String? email,  String? avatarUrl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CustomerAccount() when $default != null:
-return $default(_that.id,_that.phone,_that.locale,_that.profileComplete,_that.name,_that.email);case _:
+return $default(_that.id,_that.phone,_that.locale,_that.profileComplete,_that.name,_that.email,_that.avatarUrl);case _:
   return orElse();
 
 }
@@ -185,10 +186,10 @@ return $default(_that.id,_that.phone,_that.locale,_that.profileComplete,_that.na
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String phone,  String locale,  bool profileComplete,  String? name,  String? email)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String phone,  String locale,  bool profileComplete,  String? name,  String? email,  String? avatarUrl)  $default,) {final _that = this;
 switch (_that) {
 case _CustomerAccount():
-return $default(_that.id,_that.phone,_that.locale,_that.profileComplete,_that.name,_that.email);case _:
+return $default(_that.id,_that.phone,_that.locale,_that.profileComplete,_that.name,_that.email,_that.avatarUrl);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -205,10 +206,10 @@ return $default(_that.id,_that.phone,_that.locale,_that.profileComplete,_that.na
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String phone,  String locale,  bool profileComplete,  String? name,  String? email)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String phone,  String locale,  bool profileComplete,  String? name,  String? email,  String? avatarUrl)?  $default,) {final _that = this;
 switch (_that) {
 case _CustomerAccount() when $default != null:
-return $default(_that.id,_that.phone,_that.locale,_that.profileComplete,_that.name,_that.email);case _:
+return $default(_that.id,_that.phone,_that.locale,_that.profileComplete,_that.name,_that.email,_that.avatarUrl);case _:
   return null;
 
 }
@@ -220,7 +221,7 @@ return $default(_that.id,_that.phone,_that.locale,_that.profileComplete,_that.na
 @JsonSerializable()
 
 class _CustomerAccount implements CustomerAccount {
-  const _CustomerAccount({required this.id, required this.phone, required this.locale, required this.profileComplete, this.name, this.email});
+  const _CustomerAccount({required this.id, required this.phone, required this.locale, required this.profileComplete, this.name, this.email, this.avatarUrl});
   factory _CustomerAccount.fromJson(Map<String, dynamic> json) => _$CustomerAccountFromJson(json);
 
 @override final  String id;
@@ -229,6 +230,7 @@ class _CustomerAccount implements CustomerAccount {
 @override final  bool profileComplete;
 @override final  String? name;
 @override final  String? email;
+@override final  String? avatarUrl;
 
 /// Create a copy of CustomerAccount
 /// with the given fields replaced by the non-null parameter values.
@@ -243,18 +245,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _CustomerAccount&&(identical(other.id, id) || other.id == id)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.locale, locale) || other.locale == locale)&&(identical(other.profileComplete, profileComplete) || other.profileComplete == profileComplete)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _CustomerAccount&&(identical(other.id, id) || other.id == id)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.locale, locale) || other.locale == locale)&&(identical(other.profileComplete, profileComplete) || other.profileComplete == profileComplete)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,phone,locale,profileComplete,name,email);
+    return Object.hash(runtimeType,id,phone,locale,profileComplete,name,email,avatarUrl);
 }
 
 @override
 String toString() {
-    return 'CustomerAccount(id: $id, phone: $phone, locale: $locale, profileComplete: $profileComplete, name: $name, email: $email)';
+    return 'CustomerAccount(id: $id, phone: $phone, locale: $locale, profileComplete: $profileComplete, name: $name, email: $email, avatarUrl: $avatarUrl)';
 }
 
 
@@ -265,7 +267,7 @@ abstract mixin class _$CustomerAccountCopyWith<$Res> implements $CustomerAccount
   factory _$CustomerAccountCopyWith(_CustomerAccount value, $Res Function(_CustomerAccount) _then) = __$CustomerAccountCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String phone, String locale, bool profileComplete, String? name, String? email
+ String id, String phone, String locale, bool profileComplete, String? name, String? email, String? avatarUrl
 });
 
 
@@ -282,7 +284,7 @@ class __$CustomerAccountCopyWithImpl<$Res>
 
 /// Create a copy of CustomerAccount
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? phone = null,Object? locale = null,Object? profileComplete = null,Object? name = freezed,Object? email = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? phone = null,Object? locale = null,Object? profileComplete = null,Object? name = freezed,Object? email = freezed,Object? avatarUrl = freezed,}) {
   return _then(_CustomerAccount(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
@@ -290,6 +292,7 @@ as String,locale: null == locale ? _self.locale : locale // ignore: cast_nullabl
 as String,profileComplete: null == profileComplete ? _self.profileComplete : profileComplete // ignore: cast_nullable_to_non_nullable
 as bool,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
